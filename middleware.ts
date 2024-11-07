@@ -20,7 +20,11 @@ export default auth(async function middleware(req: NextRequest) {
   const token = await getToken({
     req: req,
     secret: process.env.AUTH_SECRET || "",
-    salt: "authjs.session-token",
+    salt:
+      process.env.NODE_ENV === "production"
+        ? "__Secure-authjs.session-token"
+        : "authjs.session-token",
+        cookieName: "__Secure-authjs.session-token"
   });
 
   const isLoggedIn = session === null ? false : true;
@@ -52,6 +56,8 @@ export default auth(async function middleware(req: NextRequest) {
   if (isPremiumMemberRoute && !isPremiumMember) {
 
     console.log('Here is issue')
+    console.log(session?.user);
+    console.log(token);
     return NextResponse.redirect(`${BASE_URL}/dashboard`);
   }
 
