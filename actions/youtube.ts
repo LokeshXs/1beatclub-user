@@ -1,0 +1,142 @@
+"use server";
+
+import axios from "axios";
+import { z } from "zod";
+import { addSongFormSchema } from "@/schema/schema";
+import prisma from "@/lib/prisma";
+import { auth } from "@/auth";
+
+// This function gets a youtube url and returns back the info of that video like thumbnail,title
+
+export async function getVideoInfo(
+  value: z.infer<typeof addSongFormSchema>,
+  clubId: string
+) {
+  try {
+    const session = await auth();
+
+    if (!session?.user.id) {
+      throw new Error("something went wrong");
+    }
+
+    if (!clubId) {
+      return {
+        status: "error",
+        message: "Not Club id found, Please refresh!",
+      };
+    }
+    const validateUrl = addSongFormSchema.safeParse(value);
+
+    if (!validateUrl.success) {
+      return {
+        status: "error",
+        message: "Enter a youtube video url",
+      };
+    }
+
+    const { url: link } = validateUrl.data;
+
+    const url = new URL(link);
+    const params = new URLSearchParams(url.search);
+
+    const videoId = params.get("v");
+
+    if (!videoId) {
+      return {
+        status: "error",
+        message: "Enter a youtube video url",
+      };
+    }
+
+    const response = await axios.get(
+      `https://youtube.googleapis.com/youtube/v3/videos`,
+      {
+        params: {
+          part: "snippet",
+          id: videoId,
+          key: process.env.GOOGLE_API_KEY,
+        },
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
+
+    const data = response.data;
+    const videoDetails = data.items[0].snippet;
+
+    // const videoTags: string[] | undefined = videoDetails?.tags;
+
+    // if (!videoTags) {
+    //   throw new Error("Please add a video song!");
+    // }
+
+    // let isAVideoSong: boolean = false;
+
+    // for (let i = 0; i < videoTags.length; i++) {
+    //   const tag = videoTags[i];
+
+    //   var containsSongWord =
+    //     tag.includes("song") || tag.includes("Song") || tag.includes("SONG");
+
+    //   if (containsSongWord) {
+    //     isAVideoSong = containsSongWord;
+    //     break;
+    //   }
+    // }
+
+    // if (!isAVideoSong) {
+    //   throw new Error("Please add a video song!");
+    // }
+
+    const highResoultionThumbnail =
+      videoDetails.thumbnails?.maxres?.url ||
+      videoDetails.thumbnails?.standard?.url ||
+      videoDetails.thumbnails?.high?.url ||
+      videoDetails.thumbnails?.medium?.url;
+
+    const newSong = await prisma.listedSongs.create({
+      data: {
+        user_id: session.user.id,
+        songTitle: videoDetails.title,
+        thumbnail: videoDetails.thumbnails.medium.url,
+        highResThumbnail: highResoultionThumbnail,
+        link: link,
+        videoId: videoId,
+      },
+    });
+
+    await prisma.listedSongs.update({
+      where: {
+        id: newSong.id,
+      },
+      data: {
+        club: {
+          connect: {
+            id: clubId,
+          },
+        },
+      },
+    });
+
+    return {
+      status: "success",
+      message: "Video Details Fetched Successfully",
+      data: {
+        id: newSong.id,
+        songTitle: videoDetails.title,
+        thumbnail: videoDetails.thumbnails.medium.url,
+        videoId: videoId,
+        highResThumbnail: highResoultionThumbnail,
+        link: link,
+        clubId: clubId,
+      },
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      status: "error",
+      message: error.message || "Something went wrong, Try Again!",
+    };
+  }
+}
