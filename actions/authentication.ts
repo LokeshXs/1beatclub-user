@@ -44,7 +44,7 @@ export async function signUpAction(values: z.infer<typeof signupFormSchema>) {
 
 export async function signInAction(values: z.infer<typeof signInFormSchema>) {
   try {
-     await signIn("credentials", {
+    await signIn("credentials", {
       ...values,
       redirectTo: "/dashboard",
     });
@@ -80,5 +80,16 @@ export async function signInAction(values: z.infer<typeof signInFormSchema>) {
 }
 
 export async function googleSignIn() {
-  await signIn("google", { redirectTo: "/dashboard" });
+  try {
+    await signIn("google", { redirectTo: "/dashboard" });
+  } catch (error) {
+    if (isRedirectError(error)) {
+      throw error;
+    } else {
+      return {
+        status: "error",
+        message: "something went wrong",
+      };
+    }
+  }
 }

@@ -24,13 +24,13 @@ export default auth(async function middleware(req: NextRequest) {
       process.env.NODE_ENV === "production"
         ? "__Secure-authjs.session-token"
         : "authjs.session-token",
-        cookieName: "__Secure-authjs.session-token"
+    cookieName: "__Secure-authjs.session-token",
   });
 
   const isLoggedIn = session === null ? false : true;
   const isPremiumMember = token?.isPremiumMember as boolean;
 
-  const isApiAuthRoute = API_AUTH_PREFIX.includes(nextUrl.pathname);
+  const isApiAuthRoute = nextUrl.pathname.startsWith(API_AUTH_PREFIX);
   const isPublicRoute = PUBLIC_ROUTES.includes(nextUrl.pathname);
   const isAuthRoute = AUTH_ROUTES.includes(nextUrl.pathname);
   const isPremiumMemberRoute = PREMIUM_MEMEBERS_ROUTES.includes(
@@ -50,14 +50,12 @@ export default auth(async function middleware(req: NextRequest) {
   }
 
   if (!isLoggedIn && !isPublicRoute) {
+
+
     return NextResponse.redirect(`${BASE_URL}/signin`);
   }
 
   if (isPremiumMemberRoute && !isPremiumMember) {
-
-    console.log('Here is issue')
-    console.log(session?.user);
-    console.log(token);
     return NextResponse.redirect(`${BASE_URL}/dashboard`);
   }
 

@@ -1,13 +1,26 @@
 import { googleSignIn } from "@/actions/authentication";
 import SignInForm from "@/components/authentication/SignInForm";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const { error } = await searchParams;
+  let errorMessage = "";
+  if (error === "OAuthAccountNotLinked") {
+    errorMessage = "You are using manual email/password sign in";
+  }
+
   return (
     <>
-      <h1 className=" text-2xl max-sm:text-xl text-center font-semibold">Sign In</h1>
+      <h1 className=" text-2xl max-sm:text-xl text-center font-semibold">
+        Sign In
+      </h1>
 
       <p className=" text-base max-sm:text-sm  text-center font-normal">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus,
@@ -30,6 +43,7 @@ export default function Page() {
             "use server";
             await googleSignIn();
           }}
+          className=" flex flex-col items-center gap-1"
         >
           <Button className=" flex gap-4 max-sm:gap-2  shadow-none  ">
             <Image
@@ -40,6 +54,14 @@ export default function Page() {
             />
             <p>Continue with google</p>
           </Button>
+
+          <div
+            className={cn("", {
+              " bg-red-600 p-2 rounded-lg text-white": errorMessage !== "",
+            })}
+          >
+            <p>{errorMessage}</p>
+          </div>
         </form>
       </div>
     </>

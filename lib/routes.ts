@@ -4,7 +4,7 @@
  * @type {string;}
  */
 
-export const PUBLIC_ROUTES = ["/","/api/songs/currentsong"];
+export const PUBLIC_ROUTES = ["/"];
 
 
 /**
@@ -13,7 +13,7 @@ export const PUBLIC_ROUTES = ["/","/api/songs/currentsong"];
  * @type {string[]}
  */
 
-export const AUTH_ROUTES=["/signup","/signin"];
+export const AUTH_ROUTES=["/signup","/signin","/auth/error"];
 
 /**
  * The prefix for API authentication routes
@@ -23,7 +23,7 @@ export const AUTH_ROUTES=["/signup","/signin"];
 
 
 
-export const API_AUTH_PREFIX = ["/api/auth"];
+export const API_AUTH_PREFIX = "/api/auth";
 
 
 /**

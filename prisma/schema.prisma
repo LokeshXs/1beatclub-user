@@ -24,7 +24,9 @@ model User {
   id              String        @id @default(uuid())
   name            String
   email           String        @unique
-  password        String
+  emailVerified DateTime?
+  password        String?
+  image         String?
   role            String        @default("user")
   accounts        Account[]
   myMusicClub     MusicClub[]
@@ -44,7 +46,7 @@ model Account {
   providerAccountId String
   referesh_token    String?
   access_token      String?
-  expirest_at       Int?
+  expires_at       Int?
   token_type        String
   scope             String?
   id_token          String?

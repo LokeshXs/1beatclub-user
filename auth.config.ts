@@ -2,7 +2,7 @@ import NextAuth, { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { signInFormSchema } from "./schema/schema";
-import google from "next-auth/providers/google";
+import Google from "next-auth/providers/google";
 import userInstance from "@/services/User";
 
  
@@ -37,7 +37,7 @@ export default { providers: [
             throw new Error("User Not Found");
           }
 
-          const isPasswordValid = await bcrypt.compare(password, user.password);
+          const isPasswordValid = await bcrypt.compare(password, user.password||"");
 
           if (!isPasswordValid) {
             throw new Error("User email or password incorrect");
@@ -50,6 +50,6 @@ export default { providers: [
       },
     }),
 
-    google,
+    Google,
   ],
  } satisfies NextAuthConfig

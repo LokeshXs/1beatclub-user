@@ -9,7 +9,6 @@ declare module "next-auth" {
     user: {
       role: string;
       isPremiumMember: boolean;
- 
     } & DefaultSession["user"];
   }
 }
@@ -18,7 +17,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
 
   callbacks: {
-    jwt: async ({ token }) => {
+    jwt: async ({ token, account }) => {
+     
+
       if (!token.sub) {
         return token;
       }
@@ -51,6 +52,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
   session: {
     strategy: "jwt",
+  },
+  pages: {
+    signIn: "/signin",
+    error: "/auth/error",
   },
   adapter: PrismaAdapter(prisma),
 });

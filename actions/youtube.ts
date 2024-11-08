@@ -65,29 +65,6 @@ export async function getVideoInfo(
     const data = response.data;
     const videoDetails = data.items[0].snippet;
 
-    // const videoTags: string[] | undefined = videoDetails?.tags;
-
-    // if (!videoTags) {
-    //   throw new Error("Please add a video song!");
-    // }
-
-    // let isAVideoSong: boolean = false;
-
-    // for (let i = 0; i < videoTags.length; i++) {
-    //   const tag = videoTags[i];
-
-    //   var containsSongWord =
-    //     tag.includes("song") || tag.includes("Song") || tag.includes("SONG");
-
-    //   if (containsSongWord) {
-    //     isAVideoSong = containsSongWord;
-    //     break;
-    //   }
-    // }
-
-    // if (!isAVideoSong) {
-    //   throw new Error("Please add a video song!");
-    // }
 
     const highResoultionThumbnail =
       videoDetails.thumbnails?.maxres?.url ||
