@@ -112,18 +112,21 @@ export default function SongPlaying() {
               fs: 0,
               rel: 0,
               mute: 0,
+              
             },
           }}
           onEnd={(event: any) => {
             nextSongPlease();
           }}
-          onPause={(event: any) => {
-            event.target.playVideo();
-          }}
+          // onPause={(event: any) => {
+          //   event.target.playVideo();
+          // }}
           onError={(event: any) => {
             // console.log("An error occured");
             toast.error("Cannot able to play song!");
           }}
+
+          
         />
       )}
     </div>

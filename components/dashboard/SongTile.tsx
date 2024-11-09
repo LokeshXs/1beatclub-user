@@ -32,8 +32,8 @@ export default function SongTile({
   );
 
   return (
-    <div className=" flex justify-between gap-4 items-center py-4 max-sm:py-2 px-12 max-sm:px-4 bg-secondary rounded-xl mx-2">
-      <div className=" flex gap-6 max-sm:gap-2 items-center">
+    <div className=" flex max-sm:flex-col justify-between gap-4 items-center py-4 max-sm:py-2 px-12 max-sm:px-4 bg-secondary rounded-xl mx-2">
+      <div className=" flex gap-6  max-sm:gap-2 items-center">
         <Image
           src={thumbnail}
           alt={songTitle}
@@ -48,6 +48,7 @@ export default function SongTile({
         </div>
       </div>
 
+      <div className=" flex items-center gap-4">
       <Button
         className=" bg-primary px-8 max-sm:px-6 rounded-full flex items-center gap-1"
         title="Vote"
@@ -78,7 +79,7 @@ export default function SongTile({
 
       {selectedClub?.adminId === session.data?.user.id && (
         <IconTrashXFilled
-          className=" w-12 h-12 text-red-600 hover:cursor-pointer"
+          className=" w-10 h-10 max-sm:w-6 max-sm:h-6 text-red-600 hover:cursor-pointer"
           title="Remove Song"
           onClick={async () => {
             if (wsClient) {
@@ -94,6 +95,7 @@ export default function SongTile({
           }}
         />
       )}
+      </div>
     </div>
   );
 }
