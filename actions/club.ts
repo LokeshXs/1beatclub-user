@@ -96,7 +96,6 @@ export const updateCurrentlyPlayingSong = async (
   clubId: string
 ) => {
   try {
-    console.log("Updating");
     const res = await clubInstance.updateCurrentSong(songId, clubId);
 
     if (res.status === "error") {

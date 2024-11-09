@@ -28,7 +28,6 @@ import { cn } from "@/lib/utils";
 import { useMusicClub } from "@/store/musicClubStore";
 
 import Invites from "./Invites";
-import { DownVoteInDB, upvoteInDB } from "@/actions/song";
 import { SongType } from "@/types/types";
 import { getCurrentSongInClub } from "@/actions/club";
 
@@ -40,23 +39,26 @@ export default function SongsListed() {
   >([]);
   const selectedClub = useMusicClub((state) => state.selectedClub);
   const setSelectedClub = useMusicClub((state) => state.setSelectedClub);
-  const listedSongs = useListedSongStore((state) => state.listedSongs);
-  const addSongs = useListedSongStore((state) => state.addSongs);
-  const setCurrentSong = useListedSongStore(
-    (state) => state.setCurrentSongPlaying
-  );
-  const resetSongs = useListedSongStore((state) => state.resetSongs);
+
+  const {
+    removeSong,
+    listedSongs,
+    addSongs,
+    setCurrentSongPlaying: setCurrentSong,
+    resetSongs,
+    updateVote,
+    addNewSong,
+    nextSong: playnextSong,
+  } = useListedSongStore();
+
   const { wsClient } = useContext(WebSocketClientContext);
   const { data } = useSession();
-
-  const updateVote = useListedSongStore((state) => state.updateVote);
-  const addNewSong = useListedSongStore((state) => state.addNewSong);
-  const playnextSong = useListedSongStore((state) => state.nextSong);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
   const userId = data?.user?.id;
+  const isAdmin = data?.user.role === "ADMIN";
 
   useEffect(() => {
     async function getUserClubs() {
@@ -83,6 +85,7 @@ export default function SongsListed() {
         return;
       }
       resetSongs();
+      setCurrentSong(null);
 
       const response = await axios.get("/api/songs/all", {
         params: { clubid: selectedClub.id },
@@ -91,16 +94,14 @@ export default function SongsListed() {
       let data: SongType[] = response.data?.data;
 
       const currentSongRes = await getCurrentSongInClub(selectedClub.id);
+
       const currentSongId = currentSongRes.data;
-      console.log(currentSongRes);
 
-      const filteredSongs = data.filter((value)=>value.id !== currentSongId);
-      const currentSong = data.filter((value)=>value.id === currentSongId);
+      const filteredSongs = data.filter((value) => value.id !== currentSongId);
+      const currentSong = data.filter((value) => value.id === currentSongId);
 
-     
-
+      setCurrentSong(currentSong[0]);
       addSongs(filteredSongs);
-      setCurrentSong(currentSong[0])
       setIsFetching(false);
     }
 
@@ -124,10 +125,12 @@ export default function SongsListed() {
           if (selectedClub?.id === messageData.data.clubid) {
             playnextSong();
           }
+        } else if (messageData?.type === "REMOVE") {
+          removeSong(messageData.songId);
         }
       };
     }
-  }, [wsClient, updateVote, addNewSong, data, playnextSong, selectedClub]);
+  }, [wsClient, updateVote, addNewSong, data, playnextSong, selectedClub,removeSong]);
 
   if (isFetching || !userId) {
     return (
@@ -208,7 +211,7 @@ export default function SongsListed() {
       </div>
 
       {listedSongs.map((value, index) => (
-        <SongTile key={index} userId={userId} {...value} />
+        <SongTile key={index} isAdmin={isAdmin} userId={userId} {...value} />
       ))}
     </div>
   );

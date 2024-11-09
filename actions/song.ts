@@ -48,3 +48,25 @@ export async function DownVoteInDB(songId: string) {
     };
   }
 }
+
+export async function removeSongInDB(songId: string) {
+  try {
+
+
+    await prisma.listedSongs.delete({
+      where: {
+        id: songId,
+      },
+    });
+
+    return {
+      status: "success",
+      message: "downvoted",
+    };
+  } catch (err) {
+    return {
+      status: "error",
+      message: "something went wrong",
+    };
+  }
+}

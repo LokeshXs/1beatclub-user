@@ -8,6 +8,7 @@ type StoreType = {
   setCurrentSongPlaying: (song: SongType | null) => void;
   addNewSong: (videoDetails: SongType) => void;
   addSongs: (songs: SongType[]) => void;
+  removeSong: (songId: string) => void;
   updateVote: (
     type: "upvote" | "downVote",
     songId: string,
@@ -33,6 +34,14 @@ export const useListedSongStore = create<StoreType>((set) => ({
   addSongs: (songs: SongType[]) => {
     set((prevState) => ({
       listedSongs: songsSorting(songs),
+    }));
+  },
+
+  removeSong: (songId: string) => {
+    set((prevState) => ({
+      listedSongs: songsSorting(
+        prevState.listedSongs.filter((value: SongType) => value.id !== songId)
+      ),
     }));
   },
 

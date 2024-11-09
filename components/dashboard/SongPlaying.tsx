@@ -46,7 +46,7 @@ export default function SongPlaying() {
     };
 
     updateNextSongInDB();
-  }, [currentSongPlaying, selectedClub]);
+  }, [currentSongPlaying]);
 
   async function nextSongPlease() {
     await removeSongfromClub(currentSongPlaying?.id!, selectedClub?.id!);

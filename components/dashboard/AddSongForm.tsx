@@ -57,13 +57,10 @@ export default function AddSongForm() {
             );
           }
 
-
-
           if (!currentSongPlaying) {
-            await updateCurrentlyPlayingSong(
-              data.data.id,
-              selectedClub.id
-            );
+
+            console.log('Updating current song');
+            await updateCurrentlyPlayingSong(data.data.id, selectedClub.id);
           }
 
           toast.success(data.message);
@@ -86,7 +83,7 @@ export default function AddSongForm() {
           control={form.control}
           name="url"
           render={({ field }) => (
-            <FormItem >
+            <FormItem>
               <FormLabel />
               <FormControl>
                 <Input
