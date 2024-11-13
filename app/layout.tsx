@@ -21,14 +21,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <WebSocketClientProvider>
+       
           <OurThemeProvider>
             <MobileNavBarProvider>
               <Toaster richColors position="top-center" />
               {children}
             </MobileNavBarProvider>
           </OurThemeProvider>
-        </WebSocketClientProvider>
+        
       </body>
     </html>
   );

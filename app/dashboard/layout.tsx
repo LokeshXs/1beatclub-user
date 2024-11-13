@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { SessionProvider } from "next-auth/react";
 import DashboardSideBar from "./DashboardSideBar";
 import { auth } from "@/auth";
+import WebSocketClientProvider from "@/context/WebSocketClientProvider";
 
 export default async function Layout({
   children,
@@ -21,7 +22,9 @@ export default async function Layout({
       <DashboardSideBar
         isPremiumMember={session?.user.isPremiumMember || false}
       />
-      <SessionProvider>{children}</SessionProvider>
+      <SessionProvider>
+        <WebSocketClientProvider>{children}</WebSocketClientProvider>
+      </SessionProvider>
     </div>
   );
 }

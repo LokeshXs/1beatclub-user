@@ -56,7 +56,7 @@ export default function SongPlaying() {
         JSON.stringify({
           type: "SONGCHANGE",
           data: {
-            clubid: selectedClub?.id,
+            clubId: selectedClub?.id,
           },
         })
       );

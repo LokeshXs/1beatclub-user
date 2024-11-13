@@ -57,7 +57,7 @@ export default function SongTile({
             updateVote("downVote", id, userId);
             if (wsClient) {
               wsClient.send(
-                JSON.stringify({ type: "DOWNVOTE", songId: id, userId: userId })
+                JSON.stringify({ type: "DOWNVOTE",data:{ clubId:selectedClub?.id ,songId: id, userId: userId} })
               );
               DownVoteInDB(id);
             }
@@ -65,7 +65,7 @@ export default function SongTile({
             updateVote("upvote", id, userId);
             if (wsClient) {
               wsClient.send(
-                JSON.stringify({ type: "UPVOTE", songId: id, userId: userId })
+                JSON.stringify({ type: "UPVOTE", data:{ clubId:selectedClub?.id ,songId: id, userId: userId} })
               );
 
               upvoteInDB(id);
@@ -83,7 +83,7 @@ export default function SongTile({
           title="Remove Song"
           onClick={async () => {
             if (wsClient) {
-              wsClient.send(JSON.stringify({ type: "REMOVE", songId: id }));
+              wsClient.send(JSON.stringify({ type: "REMOVE", data:{clubId:selectedClub?.id, songId: id} }));
               removeSong(id);
             }
 

@@ -59,7 +59,7 @@ export default function AddSongForm() {
 
           if (!currentSongPlaying) {
 
-            console.log('Updating current song');
+         
             await updateCurrentlyPlayingSong(data.data.id, selectedClub.id);
           }
 

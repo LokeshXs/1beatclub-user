@@ -5,12 +5,22 @@ import React, { useEffect, useState } from "react";
 import AddSongForm from "@/components/dashboard/AddSongForm";
 import SongsListed from "@/components/dashboard/SongsListed";
 import SongPlaying from "@/components/dashboard/SongPlaying";
+import { useContext } from "react";
+import { WebSocketClientContext } from "@/context/WebSocketClientProvider";
+import Loader from "@/components/ui/loader/loader";
 
 
 export default  function SidebarDemo() {
 
+const {wsClient} = useContext(WebSocketClientContext);
+if(!wsClient){
 
-
+  return (
+    <div className="  flex-1 p-6 max-sm:px-2 flex justify-center items-center">
+      <Loader />
+    </div>
+  )
+}
 
 
   return (

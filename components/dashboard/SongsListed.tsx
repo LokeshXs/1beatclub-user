@@ -114,19 +114,19 @@ export default function SongsListed() {
         const messageData = JSON.parse(message.data);
 
         if (messageData?.type === "UPVOTE") {
-          updateVote("upvote", messageData?.songId, messageData?.userId);
+          updateVote("upvote", messageData?.data.songId, messageData?.data.userId);
         } else if (messageData?.type === "DOWNVOTE") {
-          updateVote("downVote", messageData?.songId, messageData?.userId);
+          updateVote("downVote", messageData?.data.songId, messageData?.data.userId);
         } else if (messageData?.type === "ADDSONG") {
           if (selectedClub?.id === messageData?.data.clubId) {
             addNewSong(messageData?.data);
           }
         } else if (messageData?.type === "SONGCHANGE") {
-          if (selectedClub?.id === messageData.data.clubid) {
+          if (selectedClub?.id === messageData.data.clubId) {
             playnextSong();
           }
         } else if (messageData?.type === "REMOVE") {
-          removeSong(messageData.songId);
+          removeSong(messageData.data.songId);
         }
       };
     }

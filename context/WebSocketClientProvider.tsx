@@ -4,6 +4,8 @@ import { createContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 import { WS_SERVER_URL } from "@/lib/config";
+import { useSession } from "next-auth/react";
+import { useMusicClub } from "@/store/musicClubStore";
 
 type ContextType = {
   wsClient: WebSocket | undefined;
@@ -20,10 +22,15 @@ export default function WebSocketClientProvider({
 }) {
   const [wsClient, setWsClient] = useState<WebSocket | undefined>();
   const pathname = usePathname();
+  const session = useSession();
+  const selectedMusicClub = useMusicClub();
+
+  const userId = session.data?.user.id || "";
+  const selectedMusicClubId = selectedMusicClub.selectedClub?.id ||"";
 
   useEffect(() => {
-    if (pathname.startsWith("/dashboard")) {
-      const ws = new WebSocket(WS_SERVER_URL);
+    if (pathname === "/dashboard" && userId) {
+      const ws = new WebSocket(`${WS_SERVER_URL}?userid=${userId}&clubid=${selectedMusicClubId}`);
       ws.onopen = () => {
         toast.success("WebSocket Connection is successfull");
         setWsClient(ws);
@@ -33,7 +40,7 @@ export default function WebSocketClientProvider({
         toast.error("WebSocket Connection is Failed");
       };
     }
-  }, [pathname]);
+  }, [pathname,userId,selectedMusicClubId]);
 
   return (
     <WebSocketClientContext.Provider value={{ wsClient }}>
