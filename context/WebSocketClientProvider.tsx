@@ -31,10 +31,17 @@ export default function WebSocketClientProvider({
   useEffect(() => {
     if (pathname === "/dashboard" && userId) {
       const ws = new WebSocket(`${WS_SERVER_URL}?userid=${userId}&clubid=${selectedMusicClubId}`);
+
+
+
       ws.onopen = () => {
         toast.success("WebSocket Connection is successfull");
         setWsClient(ws);
       };
+
+      ws.onclose = () =>{
+        toast.info("Websocket connection is closed");
+      }
 
       ws.onerror = () => {
         toast.error("WebSocket Connection is Failed");
