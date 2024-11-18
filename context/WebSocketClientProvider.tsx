@@ -44,9 +44,11 @@ export default function WebSocketClientProvider({
       ws.onclose = () => {
         toast.info("Websocket connection is closed");
 
-        setWsClient(undefined);
         if (retryCountRef.current < 5) {
           // console.log(retryCountRef.current);
+          if (retryCountRef.current === 4) {
+            setWsClient(undefined);
+          }
           const timeoutId = setTimeout(() => {
             retryCountRef.current += 1;
             wsConnection();
@@ -64,6 +66,17 @@ export default function WebSocketClientProvider({
   useEffect(() => {
     wsConnection();
   }, [pathname, userId, selectedMusicClubId, wsConnection]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (wsClient) {
+        wsClient.close();
+      }
+      wsConnection();
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [wsClient, wsConnection]);
 
   return (
     <WebSocketClientContext.Provider value={{ wsClient }}>
