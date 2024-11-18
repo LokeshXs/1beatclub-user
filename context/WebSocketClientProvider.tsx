@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 import { WS_SERVER_URL } from "@/lib/config";
@@ -21,33 +21,49 @@ export default function WebSocketClientProvider({
   children: React.ReactNode;
 }) {
   const [wsClient, setWsClient] = useState<WebSocket | undefined>();
+  const retryCountRef = useRef(0);
   const pathname = usePathname();
   const session = useSession();
   const selectedMusicClub = useMusicClub();
 
   const userId = session.data?.user.id || "";
-  const selectedMusicClubId = selectedMusicClub.selectedClub?.id ||"";
+  const selectedMusicClubId = selectedMusicClub.selectedClub?.id || "";
 
-  useEffect(() => {
+  const wsConnection = useCallback(() => {
     if (pathname === "/dashboard" && userId) {
-      const ws = new WebSocket(`${WS_SERVER_URL}?userid=${userId}&clubid=${selectedMusicClubId}`);
-
-
+      const ws = new WebSocket(
+        `${WS_SERVER_URL}?userid=${userId}&clubid=${selectedMusicClubId}`
+      );
 
       ws.onopen = () => {
         toast.success("WebSocket Connection is successfull");
         setWsClient(ws);
+        retryCountRef.current = 0;
       };
 
-      ws.onclose = () =>{
+      ws.onclose = () => {
         toast.info("Websocket connection is closed");
-      }
+
+        setWsClient(undefined);
+        if (retryCountRef.current < 5) {
+          // console.log(retryCountRef.current);
+          const timeoutId = setTimeout(() => {
+            retryCountRef.current += 1;
+            wsConnection();
+            clearTimeout(timeoutId);
+          }, 1000);
+        }
+      };
 
       ws.onerror = () => {
         toast.error("WebSocket Connection is Failed");
       };
     }
-  }, [pathname,userId,selectedMusicClubId]);
+  }, [pathname, selectedMusicClubId, userId]);
+
+  useEffect(() => {
+    wsConnection();
+  }, [pathname, userId, selectedMusicClubId, wsConnection]);
 
   return (
     <WebSocketClientContext.Provider value={{ wsClient }}>

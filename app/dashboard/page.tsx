@@ -13,12 +13,29 @@ import Loader from "@/components/ui/loader/loader";
 export default  function SidebarDemo() {
 
 const {wsClient} = useContext(WebSocketClientContext);
-if(!wsClient){
+const [connecting,setConnecting]= useState(!wsClient);
+
+if(connecting && !wsClient){
+
+  setTimeout(()=>{setConnecting(false)},10000);
 
   return (
     <div className="  flex-1 p-6 max-sm:px-2 flex justify-center items-center">
-      <Loader />
+     <div className=" flex flex-col gap-8 items-center">
+     <Loader />
+     <p>Connecting...</p>
+     </div>
     </div>
+  )
+
+  
+}
+
+if(!connecting && !wsClient){
+  return (
+    <div className="  flex-1 p-6 max-sm:px-2 flex justify-center items-center">
+   <p>Application is not working</p>
+  </div>
   )
 }
 
