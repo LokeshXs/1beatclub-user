@@ -67,16 +67,16 @@ export default function WebSocketClientProvider({
     wsConnection();
   }, [pathname, userId, selectedMusicClubId, wsConnection]);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (wsClient) {
-        wsClient.close();
-      }
-      wsConnection();
-    }, 5000);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     if (wsClient) {
+  //       wsClient.close();
+  //     }
+  //     wsConnection();
+  //   }, 5000);
 
-    return () => clearInterval(intervalId);
-  }, [wsClient, wsConnection]);
+  //   return () => clearInterval(intervalId);
+  // }, [wsClient, wsConnection]);
 
   return (
     <WebSocketClientContext.Provider value={{ wsClient }}>
