@@ -21,7 +21,6 @@ export default function WebSocketClientProvider({
   children: React.ReactNode;
 }) {
   const [wsClient, setWsClient] = useState<WebSocket | undefined>();
-  const retryCountRef = useRef(0);
   const pathname = usePathname();
   const session = useSession();
   const selectedMusicClub = useMusicClub();
@@ -38,23 +37,10 @@ export default function WebSocketClientProvider({
       ws.onopen = () => {
         toast.success("WebSocket Connection is successfull");
         setWsClient(ws);
-        retryCountRef.current = 0;
       };
 
       ws.onclose = () => {
         toast.info("Websocket connection is closed");
-
-        if (retryCountRef.current < 5) {
-          // console.log(retryCountRef.current);
-          if (retryCountRef.current === 4) {
-            setWsClient(undefined);
-          }
-          const timeoutId = setTimeout(() => {
-            retryCountRef.current += 1;
-            wsConnection();
-            clearTimeout(timeoutId);
-          }, 1000);
-        }
       };
 
       ws.onerror = () => {
@@ -67,16 +53,17 @@ export default function WebSocketClientProvider({
     wsConnection();
   }, [pathname, userId, selectedMusicClubId, wsConnection]);
 
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     if (wsClient) {
-  //       wsClient.close();
-  //     }
-  //     wsConnection();
-  //   }, 5000);
+  useEffect(() => {
+    const invterval = setInterval(() => {
+      if (wsClient?.readyState === WebSocket.OPEN) {
+        wsClient.send(JSON.stringify({ type: "ping" }));
+      }
+    }, 10000);
 
-  //   return () => clearInterval(intervalId);
-  // }, [wsClient, wsConnection]);
+    return () => {
+      clearInterval(invterval);
+    };
+  }, [wsClient]);
 
   return (
     <WebSocketClientContext.Provider value={{ wsClient }}>
