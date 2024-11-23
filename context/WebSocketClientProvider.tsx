@@ -8,11 +8,11 @@ import { useSession } from "next-auth/react";
 import { useMusicClub } from "@/store/musicClubStore";
 
 type ContextType = {
-  wsClient: WebSocket | undefined;
+  wsClient: WebSocket | null;
 };
 
 export const WebSocketClientContext = createContext<ContextType>({
-  wsClient: undefined,
+  wsClient: null,
 });
 
 export default function WebSocketClientProvider({
@@ -20,7 +20,8 @@ export default function WebSocketClientProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [wsClient, setWsClient] = useState<WebSocket | undefined>();
+  const wsClientRef = useRef<WebSocket | null>(null);
+  const [wsClient, setWsClient] = useState<WebSocket | null>(null);
   const pathname = usePathname();
   const session = useSession();
   const selectedMusicClub = useMusicClub();
@@ -30,17 +31,27 @@ export default function WebSocketClientProvider({
 
   const wsConnection = useCallback(() => {
     if (pathname === "/dashboard" && userId) {
+      if (wsClientRef.current) {
+        wsClientRef.current.close();
+        wsClientRef.current = null;
+      }
+
       const ws = new WebSocket(
         `${WS_SERVER_URL}?userid=${userId}&clubid=${selectedMusicClubId}`
       );
 
       ws.onopen = () => {
         toast.success("WebSocket Connection is successfull");
+        wsClientRef.current = ws;
         setWsClient(ws);
       };
 
       ws.onclose = () => {
         toast.info("Websocket connection is closed");
+        if (wsClientRef.current === ws) {
+          wsClientRef.current = null;
+          setWsClient(null);
+        }
       };
 
       ws.onerror = () => {
@@ -51,22 +62,30 @@ export default function WebSocketClientProvider({
 
   useEffect(() => {
     wsConnection();
+
+    return () => {
+      if (wsClientRef.current) {
+        wsClientRef.current.close();
+        wsClientRef.current = null;
+      }
+      setWsClient(null);
+    };
   }, [pathname, userId, selectedMusicClubId, wsConnection]);
 
   useEffect(() => {
     const invterval = setInterval(() => {
-      if (wsClient?.readyState === WebSocket.OPEN) {
-        wsClient.send(JSON.stringify({ type: "ping" }));
+      if (wsClientRef.current?.readyState === WebSocket.OPEN) {
+        wsClientRef.current.send(JSON.stringify({ type: "ping" }));
       }
     }, 10000);
 
     return () => {
       clearInterval(invterval);
     };
-  }, [wsClient]);
+  }, []);
 
   return (
-    <WebSocketClientContext.Provider value={{ wsClient }}>
+    <WebSocketClientContext.Provider value={{ wsClient: wsClientRef.current }}>
       {children}
     </WebSocketClientContext.Provider>
   );
