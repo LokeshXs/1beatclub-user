@@ -47,7 +47,7 @@ export default function CreateClubForm() {
       
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className=" bg-secondary text-secondary-foreground p-6 rounded-xl flex flex-col gap-6 w-[500px] "
+        className=" bg-secondary text-secondary-foreground p-6 max-sm:p-3 rounded-xl flex flex-col gap-6 w-[500px] max-sm:w-full "
       >
         <FormField
           control={form.control}

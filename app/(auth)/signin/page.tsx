@@ -2,8 +2,14 @@ import { googleSignIn } from "@/actions/authentication";
 import SignInForm from "@/components/authentication/SignInForm";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata:Metadata = {
+  title:"Sign In to Your Soundtrack",
+  description:"Log in to access your personalized music experience. Vote, list songs, and enjoy top-voted tracks with the community."
+}
 
 export default async function Page({
   searchParams,
@@ -23,8 +29,7 @@ export default async function Page({
       </h1>
 
       <p className=" text-base max-sm:text-sm  text-center font-normal">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus,
-        dignissimos!
+      Log in to join the ultimate music experience. Shape the soundtrack by voting for your favorite songs!
       </p>
 
       <div className=" flex flex-col items-center gap-4">

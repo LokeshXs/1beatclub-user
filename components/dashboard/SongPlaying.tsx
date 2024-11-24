@@ -66,10 +66,10 @@ export default function SongPlaying() {
   if (!currentSongPlaying && listedSongs.length === 0) {
     return (
       <div className="flex flex-col justify-center items-center">
-        <div className=" w-[300px] max-sm:w-[200px] ">
+        <div className=" w-[300px] max-sm:w-[100px] ">
           <Lottie options={defaultOptions} isClickToPauseDisabled={true} />
-          <p className=" text-center text-3xl max-sm:text-xl font-bold text-primary-foreground">
-            No Songs
+          <p className=" text-center text-3xl max-sm:text-lg font-bold text-primary-foreground">
+            No Song
           </p>
         </div>
       </div>

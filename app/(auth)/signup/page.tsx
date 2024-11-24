@@ -3,8 +3,14 @@
 import { googleSignIn } from "@/actions/authentication";
 import SignUpForm from "@/components/authentication/SignUpForm";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata:Metadata = {
+  title:"Sign Up to Your Soundtrack",
+  description:"Log in to access your personalized music experience. Vote, list songs, and enjoy top-voted tracks with the community."
+}
 
 export default function Page() {
   return (
@@ -12,8 +18,7 @@ export default function Page() {
       <h1 className=" text-2xl max-sm:text-xl text-center font-semibold">Sign Up</h1>
 
       <p className=" text-base max-sm:text-sm text-center font-normal">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus,
-        dignissimos!
+      Sign up to start voting on songs and shaping playlists with your community
       </p>
 
       <div className=" flex flex-col gap-4 items-center">

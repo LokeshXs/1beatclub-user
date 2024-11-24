@@ -1,6 +1,12 @@
 import NavBar from "@/components/common/NavBar";
 import UseCasesBentoGrid from "@/components/landingPage/UseCasesSection";
 import HeroSection from "@/components/landingPage/HeroSection";
+import { Metadata } from "next";
+
+export const metadata:Metadata = {
+  title:"1BeatClub: Your Music, Voted by the Crowd",
+  description:"Create and vote on playlists with 1BeatClub! Let the most-loved songs play in order, perfect for gatherings, study groups, or any moment that calls for great music."
+}
 
 
 export default function Home() {

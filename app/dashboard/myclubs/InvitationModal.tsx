@@ -30,6 +30,7 @@ import axios from "axios";
 import { sendClubInvite } from "@/actions/invites";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+import Loader2 from "@/components/ui/loader/loader2/Loader2";
 
 export default function InvitationModal({
   clubId,
@@ -41,6 +42,7 @@ export default function InvitationModal({
   const [open, setOpen] = useState(false);
   const session = useSession();
   const [searchBy, setSearchBy] = useState("");
+  const [searchingUser,setSearchingUser] = useState(false);
   const [searchedUsers, setSearchedUsers] = useState<
     { id: string; name: string; email: string }[]
   >([]);
@@ -55,6 +57,7 @@ export default function InvitationModal({
 
   useEffect(() => {
     const findUsers = async () => {
+      setSearchingUser(true);
       const res = await axios.get("/api/user/find", {
         params: {
           searchBy: debouncedSearchByValue,
@@ -67,6 +70,7 @@ export default function InvitationModal({
       }[] = res.data?.data;
 
       setSearchedUsers(data);
+      setSearchingUser(false);
     };
 
     if (debouncedSearchByValue) {
@@ -100,35 +104,37 @@ export default function InvitationModal({
 
   return (
     <Dialog>
-      <DialogTrigger className=" bg-primary py-2 w-1/2 mx-auto rounded-lg">
+      <DialogTrigger className=" bg-primary py-2 max-sm:py-1 w-1/2 mx-auto rounded-lg">
         Invite
       </DialogTrigger>
       <DialogContent className=" bg-primary">
-        <DialogHeader className=" space-y-6">
+        <DialogHeader className=" space-y-6 max-sm:space-y-4">
           <DialogTitle className=" text-center text-primary-foreground text-xl">
             Invite user to your club
           </DialogTitle>
-          <DialogDescription className=" flex flex-col items-center gap-4 justify-center ">
+          <DialogDescription className=" flex flex-col items-center max-sm:w-full gap-4 justify-center ">
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   role="combobox"
                   aria-expanded={open}
-                  className="w-[400px] justify-between"
+                  className="w-[400px] max-sm:w-full justify-between"
                 >
                   {selectedUser ? selectedUser.name : "Tap to search user ..."}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[400px] p-0">
+              <PopoverContent className="w-[400px] max-sm:w-full p-0">
                 <Command>
                   <CommandInput
                     placeholder="Search user..."
                     onValueChange={searchByChangeHandler}
                   />
                   <CommandList>
-                    <CommandEmpty>No User Found</CommandEmpty>
+                    <CommandEmpty>{debouncedSearchByValue?searchingUser ? <div className=" flex justify-center items-center">
+                      <Loader2 />
+                    </div>:"No User Found":"Search by email"}</CommandEmpty>
                     <CommandGroup>
                       {searchedUsers.map((value) => (
                         <CommandItem

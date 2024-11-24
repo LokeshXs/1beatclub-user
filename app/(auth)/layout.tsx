@@ -4,6 +4,9 @@ import Image from "next/image";
 import { IconLogout2 } from "@tabler/icons-react";
 import Link from "next/link";
 
+
+
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <main className="relative px-12 max-sm:px-4 min-h-screen w-full flex justify-center items-center bg-primary">

@@ -17,6 +17,19 @@ export default auth(async function middleware(req: NextRequest) {
   const { nextUrl } = req;
   const session = await auth();
 
+  // todo:DEVLOPMENT ONLY
+  // const token = await getToken({
+  //   req: req,
+  //   secret: process.env.AUTH_SECRET || "",
+  //   salt:
+  //     process.env.NODE_ENV === "production"
+  //       ? "__Secure-authjs.session-token"
+  //       : "authjs.session-token",
+
+  // });
+
+  // todo:PRODUCTION ONLY
+
   const token = await getToken({
     req: req,
     secret: process.env.AUTH_SECRET || "",
@@ -29,6 +42,8 @@ export default auth(async function middleware(req: NextRequest) {
 
   const isLoggedIn = session === null ? false : true;
   const isPremiumMember = token?.isPremiumMember as boolean;
+
+
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(API_AUTH_PREFIX);
   const isPublicRoute = PUBLIC_ROUTES.includes(nextUrl.pathname);
@@ -55,9 +70,10 @@ export default auth(async function middleware(req: NextRequest) {
     return NextResponse.redirect(`${BASE_URL}/signin`);
   }
 
-  if (isPremiumMemberRoute && !isPremiumMember) {
-    return NextResponse.redirect(`${BASE_URL}/dashboard`);
-  }
+  // todo: May be in future I want to add premium feature
+  // if (isPremiumMemberRoute && !isPremiumMember) {
+  //   return NextResponse.redirect(`${BASE_URL}/dashboard`);
+  // }
 
   return;
 });

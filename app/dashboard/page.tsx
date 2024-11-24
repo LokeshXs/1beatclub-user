@@ -8,6 +8,9 @@ import SongPlaying from "@/components/dashboard/SongPlaying";
 import { useContext } from "react";
 import { WebSocketClientContext } from "@/context/WebSocketClientProvider";
 import Loader from "@/components/ui/loader/loader";
+import { Metadata } from "next";
+
+
 
 
 export default  function SidebarDemo() {
@@ -20,8 +23,8 @@ if(connecting && !wsClient){
   setTimeout(()=>{setConnecting(false)},10000);
 
   return (
-    <div className="  flex-1 p-6 max-sm:px-2 flex justify-center items-center">
-     <div className=" flex flex-col gap-8 items-center">
+    <div className=" w-full h-full  flex-1 p-6 max-sm:px-2 flex justify-center items-center">
+     <div className="  flex flex-col gap-8 items-center">
      <Loader />
      <p>Connecting...</p>
      </div>
@@ -41,7 +44,7 @@ if(!connecting && !wsClient){
 
 
   return (
-    <div className="  flex-1 p-6 max-sm:px-2 grid grid-cols-2 max-sm:place-items-center gap-12  max-sm:gap-6 max-xl:grid-cols-1 max-xl:overflow-y-scroll">
+    <div className=" h-full  flex-1 p-6 max-sm:px-2 grid grid-cols-2 max-sm:place-items-center gap-12  max-sm:gap-10 max-xl:grid-cols-1 max-xl:overflow-y-scroll">
   
       <div>
         <SongPlaying />
