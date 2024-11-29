@@ -1,3 +1,6 @@
+"use client";
+
+
 import { acceptOrDeclineInvite } from "@/actions/invites";
 import { cn } from "@/lib/utils";
 import { InvitesType } from "@/types/types";
@@ -164,7 +167,7 @@ function InvitesLayout({
       </DialogTrigger>
       <DialogContent 
 
-      showCloseButton={false}
+    
         className={cn(
           "   w-[460px] max-sm:w-full  h-[400px] max-sm:h-[80%]  bg-secondary space-y-4 overflow-hidden py-12 max-sm:px-2 ",
           {
