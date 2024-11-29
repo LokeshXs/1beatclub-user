@@ -1,12 +1,6 @@
 import { acceptOrDeclineInvite } from "@/actions/invites";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { InvitesType } from "@/types/types";
-
 import {
   IconBellFilled,
   IconCircleXFilled,
@@ -16,6 +10,15 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { CircleX } from 'lucide-react';
+
+
 
 export default function Invites() {
   const [invites, setInvites] = useState<InvitesType>([]);
@@ -71,7 +74,7 @@ export default function Invites() {
             alt="No invites"
             width={500}
             height={500}
-            className=" absolute -bottom-14 -left-36   rotate-12"
+            className=" absolute -bottom-14 -left-36   rotate-12 "
           />
           <p className=" text-center text-3xl font-semibold text-pretty text-primary mt-12">
             No Invites
@@ -81,7 +84,7 @@ export default function Invites() {
         invites.map((value, index) => (
           <div
             key={`invite-${index}`}
-            className=" text-primary-foreground bg-primary px-4 py-1 rounded-xl flex justify-between gap-6 items-center"
+            className=" h-fit text-primary-foreground bg-primary px-4 py-1 rounded-xl flex justify-between gap-6 items-center"
           >
             <span>
               <p>{value.Club.name}</p>
@@ -148,25 +151,35 @@ function InvitesLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Popover>
-      <PopoverTrigger>
+
+
+    <Dialog >
+      <DialogTrigger asChild>
         <div className=" relative cursor-pointer">
           <IconBellFilled className=" w-8 h-8 text-primary" />
           <span className=" absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-600 text-primary flex justify-center items-center text-sm p-1">
             {invites.length}
           </span>
         </div>
-      </PopoverTrigger>
-      <PopoverContent
+      </DialogTrigger>
+      <DialogContent 
+
+      showCloseButton={false}
         className={cn(
-          " relative w-[460px] max-sm:w-[400px] max-[400px]:w-[340px] h-[400px]  bg-secondary space-y-4 overflow-hidden",
+          "   w-[460px] max-sm:w-full  h-[400px] max-sm:h-[80%]  bg-secondary space-y-4 overflow-hidden py-12 max-sm:px-2 ",
           {
             "overflow-y-auto": invites.length !== 0,
           }
         )}
       >
         {children}
-      </PopoverContent>
-    </Popover>
+
+        <DialogClose className=" absolute -top-2 right-2 text-primary">
+          <CircleX />
+
+        </DialogClose>
+      </DialogContent>
+
+    </Dialog>
   );
 }

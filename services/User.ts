@@ -61,7 +61,7 @@ export class User {
     const user = await prisma.user.findUnique({
       where: {
         email,
-      }
+      },
     });
 
     return user;
@@ -149,9 +149,9 @@ export class User {
             status: "PENDING",
           },
           select: {
-            adminId:true,
-            clubId:true,
-            toUserId:true,
+            adminId: true,
+            clubId: true,
+            toUserId: true,
             Club: {
               select: {
                 name: true,
@@ -167,12 +167,34 @@ export class User {
       },
     });
 
-
     return res;
   }
 
+  // Update user
 
- 
+  async updateUser(
+    email: string,
+    data: {
+      name?: string;
+      email?: string;
+      emailVerified?: Date | null;
+      password?: string | null;
+      image?: string | null;
+      role?: string;
+      isPremiumMember?: boolean;
+    }
+  ) {
+    await prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        ...data,
+      },
+    });
+
+    return true
+  }
 }
 
 export default User.getInstance();

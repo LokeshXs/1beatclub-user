@@ -22,7 +22,12 @@ type Props = {
     password: string;
   },
   "password"
->;
+> | ControllerRenderProps<
+{
+  password: string;
+},
+"password"
+>
 };
 
 export default function PasswordInput({ isPending, field,isdisabled }: Props) {

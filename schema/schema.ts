@@ -46,3 +46,12 @@ export const addSongFormSchema = z.object({
 export const createClubFormSchema = z.object({
   name: z.string().min(4,"Please enter club name"),
 });
+
+export const forgotPasswordFormSchema = z.object({
+  email: z.string().email("Incorrect mail id"),
+});
+
+
+export const resetPasswordFormSchema = z.object({
+  password: z.string().min(8, "Password should be greater than 8 characters"),
+})

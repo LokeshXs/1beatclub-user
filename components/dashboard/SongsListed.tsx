@@ -149,7 +149,7 @@ export default function SongsListed() {
     <div className=" space-y-6 max-sm:space-y-2  ">
       <div className=" py-4 px-6 bg-primary-foreground rounded-t-lg flex max-sm:flex-col justify-between items-center gap-4  ">
         <p className="text-lg max-sm:text-sm text-primary capitalize italic">
-          Songs in a club
+          Listed Songs to vote 
         </p>
         <div className=" flex items-center gap-4">
           <Popover open={open} onOpenChange={setOpen}>

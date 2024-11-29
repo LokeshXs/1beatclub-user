@@ -34,6 +34,12 @@ export default async function Page({
 
       <div className=" flex flex-col items-center gap-4">
         <SignInForm />
+
+        <span className="w-full">
+        <Link href="/forgot-password" className=" text-start">
+        Forgot Password ?
+        </Link>
+        </span>
         <span className=" text-sm text-start w-full">
           Not Signed In?{" "}
           <Link href="/signup" className="underline">
