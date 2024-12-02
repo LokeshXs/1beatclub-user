@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useContext} from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "../ui/button";
+
 import { MobileNavBarContext } from "@/context/MobileNavBarProvider";
-import { Separator } from "../ui/separator";
+
 
 const MobileNav = () => {
   const { isOpen } = useContext(MobileNavBarContext);
@@ -18,21 +18,16 @@ const MobileNav = () => {
           animate={{ top: 0, opacity: 1 }}
           exit={{ top: "100%", opacity: 0 }}
           transition={{ duration: 0.6, type: "spring" }}
-          className="fixed h-screen  w-screen bg-primary text-foreground flex justify-center items-center left-0 z-[40] overflow-y-auto  "
+          className="fixed top-0 left-0 h-screen  w-screen bg-primary text-foreground flex justify-center items-center  z-[40] overflow-y-auto  "
         >
           <div className="  p-8 max-sm:p-6   ">
             <div className="  flex flex-col items-center gap-4 text-primary-foreground ">
-              <Link href="/signup" className="hover:drop-shadow-sm">
+              <Link href="/signup" className="hover:drop-shadow-sm text-xl ">
                 Register
               </Link>
 
-              <Link href="/signin" className="hover:drop-shadow-sm">
+              <Link href="/signin" className="hover:drop-shadow-sm text-xl">
                 Login
-              </Link>
-
-              <Separator className=" bg-primary-foreground " />
-              <Link href="/" className="hover:drop-shadow-sm">
-                Premium
               </Link>
             </div>
 

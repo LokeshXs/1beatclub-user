@@ -109,6 +109,16 @@
   transform: rotateY(180deg);
 }
 
+@media(max-width:768px){
+  .custom-shape-divider-bottom-1730463123 svg {
+    position: relative;
+    display: block;
+    width: calc(250% + 1.3px);
+    height: 185px;
+    transform: rotateY(180deg);
+  }
+}
+
 .custom-shape-divider-bottom-1730463123 .shape-fill {
   fill: #41362a;
 }
