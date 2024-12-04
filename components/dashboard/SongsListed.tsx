@@ -76,7 +76,7 @@ export default function SongsListed() {
         setClubs(data);
 
         setValue(
-           data[0].name.toLowerCase()
+         data[0].name.toLowerCase()
         );
         setSelectedClub(data[0]);
 
@@ -84,6 +84,7 @@ export default function SongsListed() {
           clubs: data,
         };
       },
+      refetchOnWindowFocus:false
     });
 
   const { isLoading: areSongsLoading, isError: hasFetchingSongsError } =
@@ -126,6 +127,8 @@ export default function SongsListed() {
           songs: data,
         };
       },
+
+      refetchOnWindowFocus:false
     });
 
   useEffect(() => {
