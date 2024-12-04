@@ -29,6 +29,7 @@ export default function SongPlaying() {
   );
   const playnextSong = useListedSongStore((state) => state.nextSong);
   const listedSongs = useListedSongStore((state) => state.listedSongs);
+  const areSongsLoading = useListedSongStore((state) => state.areSongsLoading);
 
   const session = useSession();
 
@@ -63,7 +64,15 @@ export default function SongPlaying() {
     }
   }
 
-  if (!currentSongPlaying && listedSongs.length === 0) {
+  if (!session.data) {
+    throw new Error("Invalid Session");
+  }
+
+  if(areSongsLoading && !currentSongPlaying){
+  return  <Skeleton className="w-full h-[400px] rounded-xl bg-secondary/10" />;
+  }
+
+  if (!currentSongPlaying || areSongsLoading) {
     return (
       <div className="flex flex-col justify-center items-center">
         <div className=" w-[300px] max-sm:w-[100px] ">
@@ -76,9 +85,7 @@ export default function SongPlaying() {
     );
   }
 
-  if (!currentSongPlaying || !session.data) {
-    return <Skeleton className="w-full h-[400px] rounded-xl bg-secondary/10" />;
-  }
+
 
   return (
     <div className=" relative flex justify-center ">

@@ -63,6 +63,8 @@ export default function AddSongForm() {
             await updateCurrentlyPlayingSong(data.data.id, selectedClub.id);
           }
 
+          form.reset();
+
           toast.success(data.message);
         }
       } else if (data.status === "error") {

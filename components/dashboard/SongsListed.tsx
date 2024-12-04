@@ -23,17 +23,15 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "../ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-
+import { cn, songsSorting } from "@/lib/utils";
 import { useMusicClub } from "@/store/musicClubStore";
-
 import Invites from "./Invites";
 import { SongType } from "@/types/types";
 import { getCurrentSongInClub } from "@/actions/club";
+import { useQuery } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
 
 export default function SongsListed() {
-  const [isFetching, setIsFetching] = useState(true);
-  const [fetchingClubs, setIsFetchingClubs] = useState(true);
   const [clubs, setClubs] = useState<
     { name: string; id: string; adminId: string }[]
   >([]);
@@ -41,6 +39,7 @@ export default function SongsListed() {
   const setSelectedClub = useMusicClub((state) => state.setSelectedClub);
 
   const {
+    setAreSongsLoading,
     removeSong,
     listedSongs,
     addSongs,
@@ -56,57 +55,83 @@ export default function SongsListed() {
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
+  const pathname = usePathname();
 
   const userId = data?.user?.id;
   const isAdmin = data?.user.role === "ADMIN";
 
-  useEffect(() => {
-    async function getUserClubs() {
-      const response = await axios.get("/api/user/clubs");
+  const { isError: hasFetchingClubsError, isLoading: areClubsLoading } =
+    useQuery({
+      queryKey: ["music-clubs",{wsClient:wsClient}],
+      queryFn: async ({signal}) => {
+        const response = await axios.get("/api/user/clubs",{
+          signal
+        });
+        if (response.status !== 200) {
+          throw new Error("Cannot fetch the songs");
+        }
+        const data: { name: string; id: string; adminId: string }[] =
+          response.data?.data;
 
-      const data: { name: string; id: string; adminId: string }[] =
-        response.data?.data;
+        setClubs(data);
 
-      setClubs(data);
-      if (data.length > 0) {
-        setValue(data[0].name.toLowerCase());
+        setValue(
+           data[0].name.toLowerCase()
+        );
         setSelectedClub(data[0]);
-      }
-      setIsFetchingClubs(false);
-    }
 
-    getUserClubs();
-  }, [setSelectedClub]);
+        return {
+          clubs: data,
+        };
+      },
+    });
 
-  useEffect(() => {
-    async function getAllListedSongs() {
-      if (!selectedClub) {
-        setIsFetching(false);
-        return;
-      }
-      resetSongs();
-      setCurrentSong(null);
+  const { isLoading: areSongsLoading, isError: hasFetchingSongsError } =
+    useQuery({
+      queryKey: ["song-list", { clubId: selectedClub?.id},{wsClient:wsClient}],
+      queryFn: async ({signal}) => {
+        if (!selectedClub) {
+          return;
+        }
 
-      const response = await axios.get("/api/songs/all", {
-        params: { clubid: selectedClub.id },
-      });
+        const response = await axios.get("/api/songs/all", {
+          params: { clubid: selectedClub.id },
+          signal
+        });
 
-      let data: SongType[] = response.data?.data;
+        if (response.status !== 200) {
+          throw new Error("Cannot fetch the songs");
+        }
 
-      const currentSongRes = await getCurrentSongInClub(selectedClub.id);
+        const data: SongType[] = response.data?.data;
 
-      const currentSongId = currentSongRes.data;
+        const cuurentSongRes = await getCurrentSongInClub(selectedClub.id);
+        const currentSongId = cuurentSongRes.data;
 
-      const filteredSongs = data.filter((value) => value.id !== currentSongId);
-      const currentSong = data.filter((value) => value.id === currentSongId);
+        const filteredSongs = data.filter(
+          (value) => value.id !== currentSongId
+        );
+        const currentSong = data.filter((value) => value.id === currentSongId);
 
+
+     if(currentSong){
       setCurrentSong(currentSong[0]);
       addSongs(filteredSongs);
-      setIsFetching(false);
-    }
+     }else{
+      setCurrentSong(songsSorting(filteredSongs)[0]);
+      addSongs(songsSorting(filteredSongs).slice(1));
+     }
 
-    getAllListedSongs();
-  }, [selectedClub, addSongs, resetSongs, setCurrentSong]);
+        return {
+          songs: data,
+        };
+      },
+    });
+
+  useEffect(() => {
+    setAreSongsLoading(areSongsLoading);
+    console.log(areSongsLoading);
+  }, [areSongsLoading,setAreSongsLoading]);
 
   useEffect(() => {
     if (wsClient) {
@@ -114,9 +139,17 @@ export default function SongsListed() {
         const messageData = JSON.parse(message.data);
 
         if (messageData?.type === "UPVOTE") {
-          updateVote("upvote", messageData?.data.songId, messageData?.data.userId);
+          updateVote(
+            "upvote",
+            messageData?.data.songId,
+            messageData?.data.userId
+          );
         } else if (messageData?.type === "DOWNVOTE") {
-          updateVote("downVote", messageData?.data.songId, messageData?.data.userId);
+          updateVote(
+            "downVote",
+            messageData?.data.songId,
+            messageData?.data.userId
+          );
         } else if (messageData?.type === "ADDSONG") {
           if (selectedClub?.id === messageData?.data.clubId) {
             addNewSong(messageData?.data);
@@ -130,10 +163,24 @@ export default function SongsListed() {
         }
       };
     }
-  }, [wsClient, updateVote, addNewSong, data, playnextSong, selectedClub,removeSong]);
+  }, [
+    wsClient,
+    updateVote,
+    addNewSong,
+    data,
+    playnextSong,
+    selectedClub,
+    removeSong,
+  ]);
 
-  if (isFetching || !userId) {
-    return (
+  let content;
+
+  if (!userId) {
+    throw new Error("Invalid Session");
+  }
+
+  if (areClubsLoading || areSongsLoading) {
+    content = (
       <div className=" space-y-4  px-4">
         {new Array(4).fill(1).map((value, index) => (
           <Skeleton
@@ -145,11 +192,31 @@ export default function SongsListed() {
     );
   }
 
+  if (selectedClub && (hasFetchingClubsError || hasFetchingSongsError)) {
+    content = (
+      <div className=" space-y-4  px-4 flex justify-center items-center">
+        <p className=" text-2xl font-semibold text-primary-foreground">
+          Something went wrong!
+        </p>
+      </div>
+    );
+  }
+
+  if (listedSongs.length > 0) {
+    content = (
+      <>
+        {listedSongs.map((value, index) => (
+          <SongTile key={index} isAdmin={isAdmin} userId={userId} {...value} />
+        ))}
+      </>
+    );
+  }
+
   return (
     <div className=" space-y-6 max-sm:space-y-2  ">
       <div className=" py-4 px-6 bg-primary-foreground rounded-t-lg flex max-sm:flex-col justify-between items-center gap-4  ">
         <p className="text-lg max-sm:text-sm text-primary capitalize italic">
-          Listed Songs to vote 
+          Listed Songs to vote
         </p>
         <div className=" flex items-center gap-4">
           <Popover open={open} onOpenChange={setOpen}>
@@ -160,7 +227,7 @@ export default function SongsListed() {
                 aria-expanded={open}
                 className="w-[200px] justify-between"
               >
-                {fetchingClubs
+                {areClubsLoading
                   ? "Fetching..."
                   : value
                   ? clubs.find((club) => club.name.toLowerCase() === value)
@@ -186,6 +253,8 @@ export default function SongsListed() {
                               : ""
                           );
                           setSelectedClub(club);
+                          resetSongs();
+                          setCurrentSong(null);
                           setOpen(false);
                         }}
                       >
@@ -210,9 +279,7 @@ export default function SongsListed() {
         </div>
       </div>
 
-      {listedSongs.map((value, index) => (
-        <SongTile key={index} isAdmin={isAdmin} userId={userId} {...value} />
-      ))}
+      {content}
     </div>
   );
 }

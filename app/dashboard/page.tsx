@@ -8,7 +8,7 @@ import SongPlaying from "@/components/dashboard/SongPlaying";
 import { useContext } from "react";
 import { WebSocketClientContext } from "@/context/WebSocketClientProvider";
 import Loader from "@/components/ui/loader/loader";
-import { Metadata } from "next";
+
 
 
 
@@ -20,7 +20,6 @@ const [connecting,setConnecting]= useState(!wsClient);
 
 if(connecting && !wsClient){
 
-  setTimeout(()=>{setConnecting(false)},10000);
 
   return (
     <div className=" w-full h-full  flex-1 p-6 max-sm:px-2 flex justify-center items-center">

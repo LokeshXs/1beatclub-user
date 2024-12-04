@@ -30,15 +30,14 @@ export default function WebSocketClientProvider({
   const selectedMusicClubId = selectedMusicClub.selectedClub?.id || "";
 
   const wsConnection = useCallback(() => {
+    // console.log(selectedMusicClub);
     if (pathname === "/dashboard" && userId) {
       if (wsClientRef.current) {
         wsClientRef.current.close();
         wsClientRef.current = null;
       }
 
-      const ws = new WebSocket(
-        `${WS_SERVER_URL}?userid=${userId}&clubid=${selectedMusicClubId}`
-      );
+      const ws = new WebSocket(`${WS_SERVER_URL}?userid=${userId}`);
 
       ws.onopen = () => {
         toast.success("WebSocket Connection is successfull");
@@ -58,7 +57,17 @@ export default function WebSocketClientProvider({
         toast.error("WebSocket Connection is Failed");
       };
     }
-  }, [pathname, selectedMusicClubId, userId]);
+  }, [pathname, userId]);
+
+  useEffect(() => {
+    wsClientRef.current?.send(
+      JSON.stringify({
+        type: "club-change",
+        clubId: selectedMusicClubId,
+        userId: userId,
+      })
+    );
+  }, [selectedMusicClubId, userId]);
 
   useEffect(() => {
     wsConnection();
@@ -70,7 +79,7 @@ export default function WebSocketClientProvider({
       }
       setWsClient(null);
     };
-  }, [pathname, userId, selectedMusicClubId, wsConnection]);
+  }, [pathname, userId,  wsConnection]);
 
   useEffect(() => {
     const invterval = setInterval(() => {

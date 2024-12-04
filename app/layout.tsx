@@ -3,8 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import MobileNavBarProvider from "@/context/MobileNavBarProvider";
-import { OurThemeProvider } from "@/context/ThemeProvider";
-import WebSocketClientProvider from "@/context/WebSocketClientProvider";
+import ReactQueryClientProvider from "@/context/QueryClientProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,14 +20,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-       
-          <OurThemeProvider>
+        <ReactQueryClientProvider>
+         
             <MobileNavBarProvider>
               <Toaster richColors position="top-center" />
               {children}
             </MobileNavBarProvider>
-          </OurThemeProvider>
-        
+       
+        </ReactQueryClientProvider>
       </body>
     </html>
   );

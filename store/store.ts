@@ -16,11 +16,19 @@ type StoreType = {
   ) => void;
   nextSong: () => void;
   resetSongs: () => void;
+  areSongsLoading: boolean;
+  setAreSongsLoading: (isLoading: boolean) => void;
 };
 
 export const useListedSongStore = create<StoreType>((set) => ({
   listedSongs: [],
+  areSongsLoading: false,
   currentSongPlaying: null,
+  setAreSongsLoading: (isLoading: boolean) => {
+    set((prevState) => ({
+      areSongsLoading: isLoading,
+    }));
+  },
 
   addNewSong: (videoDetails: SongType) => {
     set((prevState) => ({
