@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import MobileNavBarProvider from "@/context/MobileNavBarProvider";
 import ReactQueryClientProvider from "@/context/QueryClientProvider";
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default async function RootLayout({
             <MobileNavBarProvider>
               <Toaster richColors position="top-center" />
               {children}
+              <Analytics />
             </MobileNavBarProvider>
        
         </ReactQueryClientProvider>

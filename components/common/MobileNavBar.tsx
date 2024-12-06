@@ -5,10 +5,11 @@ import { useContext} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { MobileNavBarContext } from "@/context/MobileNavBarProvider";
+import { Separator } from "@radix-ui/react-separator";
 
 
 const MobileNav = () => {
-  const { isOpen } = useContext(MobileNavBarContext);
+  const { isOpen,setIsOpen } = useContext(MobileNavBarContext);
 
   return (
     <AnimatePresence>
@@ -29,6 +30,11 @@ const MobileNav = () => {
               <Link href="/signin" className="hover:drop-shadow-sm text-xl">
                 Login
               </Link>
+
+          <Separator  className=" w-full h-[2px]  bg-primary-foreground/70 rounded-lg"/>
+              <Link href="/#howitworks" className="hover:drop-shadow-sm text-xl" onClick={()=>{setIsOpen(false)}}>
+          How It Works
+        </Link>
             </div>
 
           </div>

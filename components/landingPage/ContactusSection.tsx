@@ -17,7 +17,8 @@ import {
 export default function ContactUsSection() {
   return (
     <section id="contactus" className=" pt-20 max-md:pt-12 max-sm:pt-6">
-      <div className=" container p-6 max-sm:px-2 mx-auto space-y-4">
+      <div className=" container p-6 max-sm:px-2 mx-auto space-y-12 max-sm:space-y-6 ">
+        <div className=" flex flex-col items-center gap-4">
         <h1 className=" text-center text-primary-foreground text-4xl max-sm:text-2xl font-bold ">
           Contact <span className=" text-terniary">Us</span>
         </h1>
@@ -25,6 +26,7 @@ export default function ContactUsSection() {
           If you have any questions or suggestions, please get in touch with us.
           We&apos;re here to help and answer any questions you may have.
         </p>
+        </div>
 
         <div className=" flex max-md:flex-col items-start gap-20 max-lg:gap-6 ">
           <div className=" flex-1 space-y-4  min-w-[300px] max-md:w-full">

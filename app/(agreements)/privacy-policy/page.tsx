@@ -419,7 +419,7 @@ You are advised to review this Privacy Policy periodically for any changes. Chan
 
 <ul className=" space-y-2">
             <li className=" list-disc list-inside">
-            By visiting this page on our website: <Link href={`${BASE_URL}#contact`} className=" underline">{`${BASE_URL}#contact`}</Link>
+            By visiting this page on our website: <Link href={`${BASE_URL}/#contactus`} className=" underline">{`${BASE_URL}/#contactus`}</Link>
             </li>
 
             </ul>

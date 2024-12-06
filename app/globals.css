@@ -20,7 +20,11 @@
   .text-balance {
     text-wrap: balance;
   }
+
+
 }
+
+
 
 @layer base {
   :root {
@@ -84,12 +88,23 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border ;
+    scroll-behavior: smooth;
+    
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground ;
+    overflow-x: hidden
+
   }
+
+ 
 }
+
+
+
+
+
 
 
 .custom-shape-divider-bottom-1730463123 {
@@ -114,7 +129,7 @@
     position: relative;
     display: block;
     width: calc(250% + 1.3px);
-    height: 185px;
+    height: 125px;
     transform: rotateY(180deg);
   }
 }
@@ -122,5 +137,38 @@
 .custom-shape-divider-bottom-1730463123 .shape-fill {
   fill: #41362a;
 }
+
+.custom-shape-divider-bottom-1733517199 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.custom-shape-divider-bottom-1733517199 svg {
+  position: relative;
+  display: block;
+  width: calc(222% + 1.3px);
+  height: 185px;
+  transform: rotateY(180deg);
+}
+
+@media(max-width:768px){
+  .custom-shape-divider-bottom-1733517199 svg {
+    position: relative;
+    display: block;
+    width: calc(250% + 1.3px);
+    height: 85px;
+    transform: rotateY(180deg);
+  }
+}
+
+.custom-shape-divider-bottom-1733517199 .shape-fill {
+  fill: #ede5d9;
+}
+
+
 
 

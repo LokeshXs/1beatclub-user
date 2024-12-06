@@ -3,6 +3,9 @@ import UseCasesBentoGrid from "@/components/landingPage/UseCasesSection";
 import HeroSection from "@/components/landingPage/HeroSection";
 import { Metadata } from "next";
 import ContactUsSection from "@/components/landingPage/ContactusSection";
+import HowItWorksSection from "@/components/landingPage/HowItWorks";
+import ActionSection from "@/components/landingPage/ActionSection";
+import Footer from "@/components/landingPage/Footer";
 
 export const metadata:Metadata = {
   title:"1BeatClub: Your Music, Voted by the Crowd",
@@ -17,7 +20,10 @@ export default function Home() {
     <HeroSection />
     {/* <DashboardSection /> */}
     <UseCasesBentoGrid />
+    <HowItWorksSection />
     <ContactUsSection/>
+    <ActionSection />
+    <Footer/>
   </main>
   );
 }
