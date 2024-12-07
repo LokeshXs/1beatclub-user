@@ -24,7 +24,7 @@ model User {
   id              String        @id @default(uuid())
   name            String
   email           String        @unique
-  emailVerified DateTime?
+emailVerified DateTime?  
   password        String?
   image         String?
   role            String        @default("user")
@@ -106,6 +106,15 @@ model Invites {
   admin    User      @relation("sentInvites", fields: [adminId], references: [id])
 
   @@id(name:"inviteId",[clubId,toUserId,adminId])
+}
+
+model EmailVerificationToken{
+  id String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email,token])
 }
 
 

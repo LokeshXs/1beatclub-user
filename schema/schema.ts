@@ -7,8 +7,8 @@ export const signupFormSchema = z.object({
 });
 
 export const signInFormSchema = z.object({
-  email: z.string().email("Please enter email"),
-  password: z.string().min(8, "Password should be greater than 9 characters"),
+  email: z.string().email("Invalid email"),
+  password: z.string().min(8, "Password should be at least 8 characters"),
 });
 
 export const podcastLaunchFormSchema = z.object({

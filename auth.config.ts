@@ -21,27 +21,16 @@ export default { providers: [
 
       authorize: async (credentials) => {
         try {
-          let user = null;
-
           const validateValues = signInFormSchema.safeParse(credentials);
 
           if (!validateValues.success) {
             throw new Error("Please check input values");
           }
-
-          const { email, password } = validateValues.data;
-
-          user = await userInstance.doesUserExist(email);
-
-          if (!user) {
-            throw new Error("User Not Found");
-          }
-
-          const isPasswordValid = await bcrypt.compare(password, user.password||"");
-
-          if (!isPasswordValid) {
-            throw new Error("User email or password incorrect");
-          }
+      
+          const { email } = validateValues.data;
+          
+          let user = await userInstance.doesUserExist(email);
+       
 
           return user;
         } catch (error) {

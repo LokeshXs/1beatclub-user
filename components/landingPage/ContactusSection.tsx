@@ -22,7 +22,7 @@ export default function ContactUsSection() {
         <h1 className=" text-center text-primary-foreground text-4xl max-sm:text-2xl font-bold ">
           Contact <span className=" text-terniary">Us</span>
         </h1>
-        <p className=" text-center max-w-2xl mx-auto text-primary-foreground/90 max-sm:text-sm">
+        <p className=" text-center max-w-2xl mx-auto text-primary-foreground/90 max-sm:text-sm italic">
           If you have any questions or suggestions, please get in touch with us.
           We&apos;re here to help and answer any questions you may have.
         </p>

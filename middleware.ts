@@ -53,6 +53,7 @@ export default auth(async function middleware(req: NextRequest) {
   );
 
   if (isApiAuthRoute) {
+
     return;
   }
 

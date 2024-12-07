@@ -43,6 +43,8 @@ export default function ForgotPasswordForm() {
             to_name: res.name,
             user_email: values.email,
             resetlink: res.link,
+            type: "reset your password",
+            subject:"Reset Password"
           },
           {
             publicKey: process.env.NEXT_PUBLIC_EMAIL_JS_PUBLIC_KEY || "",
@@ -77,7 +79,7 @@ export default function ForgotPasswordForm() {
             disabled={isPending}
             className=" px-6 bg-secondary text-pretty text-primary hover:bg-secondary/90"
           >
-            {isPending?"Sending":"Send"}
+            {isPending ? "Sending" : "Send"}
           </Button>
         </div>
       </form>

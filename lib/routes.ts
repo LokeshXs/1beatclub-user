@@ -13,7 +13,7 @@ export const PUBLIC_ROUTES = ["/","/privacy-policy"];
  * @type {string[]}
  */
 
-export const AUTH_ROUTES=["/signup","/signin","/auth/error","/forgot-password","/reset-password"];
+export const AUTH_ROUTES=["/signup","/signin","/auth/error","/forgot-password","/reset-password","/verify-account"];
 
 /**
  * The prefix for API authentication routes

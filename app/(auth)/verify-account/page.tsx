@@ -1,12 +1,9 @@
-import PasswordResetForm from "@/components/authentication/ResetPasswordForm";
-import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
 import { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata:Metadata = {
-  title:"Password Reset",
-  description:"Reset your password"
+  title:"Verify Account",
+  description:"Verify your account"
 }
 
 export default async function Page({
@@ -16,7 +13,7 @@ export default async function Page({
 }) {
   const { token } = await searchParams;
 
-  const tokenDetails = await prisma.passwordResetToken.findUnique({
+  const tokenDetails = await prisma.emailVerificationToken.findUnique({
     where: {
       token: token,
     },
@@ -38,20 +35,29 @@ export default async function Page({
   }
 
   if (tokenDetails && !tokenIsExpired) {
+    try {
+      await prisma.user.update({
+        where: {
+          email: tokenDetails.email,
+        },
+        data: {
+          emailVerified:new Date()
+        },
+      });
+    } catch (err) {
+      throw new Error("Something went wrong");
+    }
+
     content = (
-      <div className="space-y-2">
-        <h1 className=" text-2xl max-sm:text-xl text-center font-semibold text-secondary">
-          Forgot Password
-        </h1>
-
-        <p className=" text-base max-sm:text-sm  text-center font-normal text-secondary/90 ">
-          Type in New Password!
+      <div>
+        <p className=" text-center text-green-600 font-medium">
+          Your Account is verified successfully 🎉
         </p>
-
-        <PasswordResetForm email={tokenDetails.email} />
       </div>
     );
   }
 
-  return <>{content}</>;
+  return (
+    <>{ content }</>
+  );
 }

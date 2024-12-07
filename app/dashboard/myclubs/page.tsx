@@ -16,14 +16,14 @@ export default async function Page() {
 
 
   return (
-    <main className=" p-6 max-sm:p-4   w-full h-full">
+    <main className=" p-6 max-sm:p-4   w-full ">
    
 
-      <div className=" grid grid-cols-3 max-xl:grid-cols-2 max-md:grid-cols-1 gap-12 max-md:gap-6 place-items-center">
+      <div className=" grid grid-cols-3 max-2xl:grid-cols-2 max-xl:grid-cols-1 gap-12 max-md:gap-6 place-items-center">
         {myClubs.map((value, index) => (
           <div
             key={`club-${index}`}
-            className=" w-[400px] max-lg:w-[360px] max-sm:w-full min-h-72 max-lg:min-h-60 max-sm:min-h-40 bg-primary-foreground rounded-xl p-4 flex flex-col "
+            className=" w-[400px]  max-lg:w-[360px] max-sm:w-full min-h-72 max-lg:min-h-60 max-sm:min-h-40 bg-primary-foreground rounded-xl p-4 flex flex-col "
           >
             <div className=" flex-1 flex justify-center items-center">
               <p className=" text-primary text-4xl max-md:text-2xl text-center">{value.name}</p>

@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { User } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "./lib/prisma";
 import authConfig from "./auth.config";
@@ -11,15 +11,34 @@ declare module "next-auth" {
       isPremiumMember: boolean;
     } & DefaultSession["user"];
   }
+  interface User {
+    emailVerified: Date | null;
+  }
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
 
   callbacks: {
-    jwt: async ({ token, account }) => {
-     
+    async signIn({ user, account, profile }) {
+      if (account?.provider === "google") {
+        console.log(user.emailVerified);
+        if (user.emailVerified === null) {
+          await prisma.user.update({
+            where: {
+              email: user.email || "",
+            },
+            data: {
+              emailVerified: new Date(),
+            },
+          });
+        }
+      }
 
+      return true;
+    },
+
+    jwt: async ({ token, account }) => {
       if (!token.sub) {
         return token;
       }
@@ -31,11 +50,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         select: {
           role: true,
           isPremiumMember: true,
+          emailVerified: true,
         },
       });
 
       token.role = existingUser?.role;
       token.isPremiumMember = existingUser?.isPremiumMember;
+
       return token;
     },
 

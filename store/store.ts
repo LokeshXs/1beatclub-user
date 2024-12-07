@@ -34,7 +34,7 @@ export const useListedSongStore = create<StoreType>((set) => ({
     set((prevState) => ({
       currentSongPlaying: prevState.currentSongPlaying || videoDetails,
       listedSongs: prevState.currentSongPlaying
-        ? [...prevState.listedSongs, videoDetails]
+        ? songsSorting([...prevState.listedSongs, videoDetails])
         : [],
     }));
   },

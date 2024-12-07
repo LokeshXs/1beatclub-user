@@ -11,6 +11,8 @@ import { useContext, useEffect } from "react";
 import { WebSocketClientContext } from "@/context/WebSocketClientProvider";
 import { useMusicClub } from "@/store/musicClubStore";
 import { removeSongfromClub, updateCurrentlyPlayingSong } from "@/actions/club";
+import { Button } from "../ui/button";
+import { IconPlayerTrackNextFilled, IconVolume, IconVolumeOff } from "@tabler/icons-react";
 
 const defaultOptions = {
   loop: true,
@@ -47,7 +49,7 @@ export default function SongPlaying() {
     };
 
     updateNextSongInDB();
-  }, [currentSongPlaying]);
+  }, [currentSongPlaying,selectedClub]);
 
   async function nextSongPlease() {
     await removeSongfromClub(currentSongPlaying?.id!, selectedClub?.id!);
@@ -103,10 +105,15 @@ export default function SongPlaying() {
             <p className=" max break-all text-primary text-lg max-sm:text-sm max-w-[90%] text-center">
               {currentSongPlaying.songTitle}
             </p>
+
+
           </div>
+
+
         </div>
       ) : (
-        <Youtube
+        <div>
+          <Youtube
           id="yt-video"
           iframeClassName=" w-[680px] max-2xl:w-[500px] max-sm:w-[400px] max-[400px]:w-[340px] aspect-video"
           videoId={currentSongPlaying.videoId}
@@ -131,10 +138,20 @@ export default function SongPlaying() {
           onError={(event: any) => {
             // console.log("An error occured");
             toast.error("Cannot able to play song!");
+            nextSongPlease();
           }}
 
           
         />
+
+        {selectedClub?.adminId === session.data.user.id &&
+         <Button className=" w-full bg-terniary rounded-t-none text-terniary-foreground flex  items-center gap-2 py-6 max-sm:py-2 sm:hover:bg-terniary/90 " onClick={()=>{nextSongPlease()}}><span>
+         Next Song</span> 
+           <IconPlayerTrackNextFilled />
+         </Button>
+        }
+       
+        </div>
       )}
     </div>
   );

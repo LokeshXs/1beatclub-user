@@ -16,16 +16,20 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import PasswordInput from "../ui/PasswordInput";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { signUpAction } from "@/actions/authentication";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import emailjs from "@emailjs/browser";
 
 // FUNCTION_BEGINS_HERE
 
 export default function SignUpForm() {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
+  const [responseStatus, setResponseStatus] = useState<
+    { type: "success" | "error"; message: string } | undefined
+  >();
 
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
@@ -43,11 +47,28 @@ export default function SignUpForm() {
       const res = await signUpAction(value);
 
       if (res.status === "success") {
+
+        await emailjs.send(
+          process.env.NEXT_PUBLIC_EMAIL_JS_SERVICE_ID || "",
+          process.env.NEXT_PUBLIC_EMAIL_JS_TEMPLATE_ID || "",
+          {
+            to_name: res.name,
+            user_email: value.email,
+            resetlink: res.verificationLink,
+            type: "verify your account",
+            subject:"Verify Account"
+          },
+          {
+            publicKey: process.env.NEXT_PUBLIC_EMAIL_JS_PUBLIC_KEY || "",
+          }
+        );
+
+        form.reset();
         toast.success(res.message);
-        router.push('/signin')
-        
+        setResponseStatus({ type: "success", message: res.message });
       } else {
         toast.error(res.message);
+        setResponseStatus({ type: "error", message: res.message });
       }
     });
   };
@@ -80,7 +101,7 @@ export default function SignUpForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Email" className=" text-base"  {...field} />
+                <Input placeholder="Email" className=" text-base" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,6 +125,16 @@ export default function SignUpForm() {
         <Button type="submit" className=" w-full" disabled={isPending}>
           {isPending ? "Signing Up" : "Sign Up"}
         </Button>
+        {responseStatus && (
+          <div
+            className={cn(" px-4 py-2  text-center rounded-lg  text-white ", {
+              "bg-red-600/80": responseStatus.type === "error",
+              "bg-green-600/80": responseStatus.type === "success",
+            })}
+          >
+            {responseStatus.message}
+          </div>
+        )}
       </form>
     </Form>
   );
