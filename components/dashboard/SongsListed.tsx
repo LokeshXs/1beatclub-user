@@ -29,7 +29,7 @@ import Invites from "./Invites";
 import { SongType } from "@/types/types";
 import { getCurrentSongInClub } from "@/actions/club";
 import { useQuery } from "@tanstack/react-query";
-import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 export default function SongsListed() {
   const [clubs, setClubs] = useState<
@@ -55,7 +55,6 @@ export default function SongsListed() {
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-  const pathname = usePathname();
 
   const userId = data?.user?.id;
   const isAdmin = data?.user.role === "ADMIN";
@@ -133,7 +132,6 @@ export default function SongsListed() {
 
   useEffect(() => {
     setAreSongsLoading(areSongsLoading);
-    console.log(areSongsLoading);
   }, [areSongsLoading,setAreSongsLoading]);
 
   useEffect(() => {
@@ -179,6 +177,7 @@ export default function SongsListed() {
   let content;
 
   if (!userId) {
+    signOut();
     throw new Error("Invalid Session");
   }
 

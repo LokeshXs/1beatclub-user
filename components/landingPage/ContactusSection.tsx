@@ -56,7 +56,7 @@ export default function ContactUsSection() {
                   target="_blank"
                   className=" hover:text-terniary hover:underline"
                 >
-                  contact@ashwacreations.com
+                  {CONTACT_EMAIL_ID}
                 </Link>
               </span>
               <span className=" flex flex-wrap items-center gap-4 max-sm:gap-2">

@@ -65,7 +65,7 @@ export default function AddSongForm() {
 
           form.reset();
 
-          toast.success(data.message);
+          toast.success("Song Added");
         }
       } else if (data.status === "error") {
         toast.error(data.message);

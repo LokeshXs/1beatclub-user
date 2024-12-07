@@ -113,6 +113,8 @@ export default function HeroSection() {
             <ArrowRight className=" group-hover:translate-x-1 transition-all duration-300 max-sm:w-4 max-sm:group-hover:translate-x-0" />
           </Link>
         </Button>
+
+        <a href="https://www.producthunt.com/posts/1beatclub?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-1beatclub" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=683983&theme=light" alt="1BeatClub - 1BeatClub&#0032;–&#0032;Where&#0032;everyone’s&#0032;vibe&#0032;becomes&#0032;the&#0032;playlist&#0033; | Product Hunt" className=" mt-4"  width="240" height="54" /></a>
       </div>
 
       <div className=" w-[400px] max-2xl:w-[360px] max-md:w-[300px] max-sm:w-[200px] ">

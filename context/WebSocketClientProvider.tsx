@@ -4,7 +4,7 @@ import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 import { WS_SERVER_URL } from "@/lib/config";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useMusicClub } from "@/store/musicClubStore";
 
 type ContextType = {
@@ -40,13 +40,13 @@ export default function WebSocketClientProvider({
       const ws = new WebSocket(`${WS_SERVER_URL}?userid=${userId}`);
 
       ws.onopen = () => {
-        toast.success("WebSocket Connection is successfull");
+        // toast.success("WebSocket Connection is successfull");
         wsClientRef.current = ws;
         setWsClient(ws);
       };
 
       ws.onclose = () => {
-        toast.info("Websocket connection is closed");
+        // toast.info("Websocket connection is closed");
         if (wsClientRef.current === ws) {
           wsClientRef.current = null;
           setWsClient(null);
@@ -54,7 +54,8 @@ export default function WebSocketClientProvider({
       };
 
       ws.onerror = () => {
-        toast.error("WebSocket Connection is Failed");
+        signOut();
+        toast.error("Something went wrong!");
       };
     }
   }, [pathname, userId]);
