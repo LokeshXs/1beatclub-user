@@ -41,7 +41,7 @@ export async function signUpAction(values: z.infer<typeof signupFormSchema>) {
 
     const token = uuidv4();
   // token expires after 5 mins
-  const expires = new Date(new Date().getTime() + 300 * 1000);
+  const expires = new Date(new Date().getTime() + (15*60 * 1000));
 
   const existingToken = await prisma.emailVerificationToken.findFirst({
     where: {
@@ -104,7 +104,7 @@ export async function signInAction(values: z.infer<typeof signInFormSchema>) {
 
     const token = uuidv4();
     // token expires after 5 mins
-    const expires = new Date(new Date().getTime() + 300 * 1000);
+    const expires = new Date(new Date().getTime() + (15*60 * 1000));
   
     const existingToken = await prisma.emailVerificationToken.findFirst({
       where: {
@@ -227,7 +227,7 @@ export async function forgotPasswordAction(
     const token = uuidv4();
 
     // token expires after 5 mins
-    const expires = new Date(new Date().getTime() + 300 * 1000);
+    const expires = new Date(new Date().getTime() + (15*60 * 1000));
 
     const existingToken = await prisma.passwordResetToken.findFirst({
       where: {
@@ -257,7 +257,7 @@ export async function forgotPasswordAction(
       name: user.name,
       status: "success",
       link: passwordResetLink,
-      message: "Reset Password email sent, valid for 5 mins!",
+      message: "Reset Password email sent, valid for 15 mins!",
     };
   } catch (err) {
     console.log(err);
