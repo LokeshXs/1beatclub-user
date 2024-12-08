@@ -30,8 +30,9 @@ export const addSongFormSchema = z.object({
         const url = new URL(data);
         const params = new URLSearchParams(url.search);
         const videoId = params.get("v");
+        const id = url.pathname.substring(1);
 
-        return typeof videoId === "string";
+        return (videoId || id);
       } catch (error) {
         return false;
       }

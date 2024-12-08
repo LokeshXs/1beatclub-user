@@ -39,7 +39,13 @@ export async function getVideoInfo(
     const url = new URL(link);
     const params = new URLSearchParams(url.search);
 
-    const videoId = params.get("v");
+    let videoId: string | null;
+
+    if(params.get("v")){
+      videoId = params.get("v")
+    }else{
+      videoId = url.pathname.substring(1)
+    }
 
     if (!videoId) {
       return {
