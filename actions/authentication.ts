@@ -39,40 +39,43 @@ export async function signUpAction(values: z.infer<typeof signupFormSchema>) {
 
     await userInstance.createUser({ name, email, password });
 
-    const token = uuidv4();
-  // token expires after 5 mins
-  const expires = new Date(new Date().getTime() + (15*60 * 1000));
 
-  const existingToken = await prisma.emailVerificationToken.findFirst({
-    where: {
-      email: email,
-    },
-  });
+    // todo: LATER verfication
 
-  if (existingToken) {
-    await prisma.emailVerificationToken.delete({
-      where: {
-        id: existingToken.id,
-      },
-    });
-  }
+  //   const token = uuidv4();
+  // // token expires after 5 mins
+  // const expires = new Date(new Date().getTime() + (15*60 * 1000));
 
-  const newEmailVerificationToken = await prisma.emailVerificationToken.create({
-    data: {
-      email: email,
-      token: token,
-      expires: expires,
-    },
-  });
+  // const existingToken = await prisma.emailVerificationToken.findFirst({
+  //   where: {
+  //     email: email,
+  //   },
+  // });
 
-  const emailVerificationLink = `${BASE_URL}/verify-account?token=${newEmailVerificationToken.token}`;
+  // if (existingToken) {
+  //   await prisma.emailVerificationToken.delete({
+  //     where: {
+  //       id: existingToken.id,
+  //     },
+  //   });
+  // }
+
+  // const newEmailVerificationToken = await prisma.emailVerificationToken.create({
+  //   data: {
+  //     email: email,
+  //     token: token,
+  //     expires: expires,
+  //   },
+  // });
+
+  // const emailVerificationLink = `${BASE_URL}/verify-account?token=${newEmailVerificationToken.token}`;
 
 
     return {
       status: "success",
-      message: "Confirmation email sent!",
-      verificationLink:emailVerificationLink,
-     name:name
+      message: "Signed Up Successfully!",
+    //   verificationLink:emailVerificationLink,
+    //  name:name
       
     };
   } catch (error) {
@@ -99,43 +102,45 @@ export async function signInAction(values: z.infer<typeof signInFormSchema>) {
       throw new Error("User Not Found");
     }
 
-    if (!user.emailVerified) {
+    // if (!user.emailVerified) {
+
+      
 
 
-    const token = uuidv4();
-    // token expires after 5 mins
-    const expires = new Date(new Date().getTime() + (15*60 * 1000));
+    // const token = uuidv4();
+    // // token expires after 5 mins
+    // const expires = new Date(new Date().getTime() + (15*60 * 1000));
   
-    const existingToken = await prisma.emailVerificationToken.findFirst({
-      where: {
-        email: email,
-      },
-    });
+    // const existingToken = await prisma.emailVerificationToken.findFirst({
+    //   where: {
+    //     email: email,
+    //   },
+    // });
   
-    if (existingToken) {
-      await prisma.emailVerificationToken.delete({
-        where: {
-          id: existingToken.id,
-        },
-      });
-    }
+    // if (existingToken) {
+    //   await prisma.emailVerificationToken.delete({
+    //     where: {
+    //       id: existingToken.id,
+    //     },
+    //   });
+    // }
   
-    const newEmailVerificationToken = await prisma.emailVerificationToken.create({
-      data: {
-        email: email,
-        token: token,
-        expires: expires,
-      },
-    });
+    // const newEmailVerificationToken = await prisma.emailVerificationToken.create({
+    //   data: {
+    //     email: email,
+    //     token: token,
+    //     expires: expires,
+    //   },
+    // });
   
-    const emailVerificationLink = `${BASE_URL}/verify-account?token=${newEmailVerificationToken.token}`;
-      return {
-        status: "success",
-        message: "Confirmation email sent!",
-        verificationLink:emailVerificationLink,
-        name:user.name
-      };
-    }
+    // const emailVerificationLink = `${BASE_URL}/verify-account?token=${newEmailVerificationToken.token}`;
+    //   return {
+    //     status: "success",
+    //     message: "Confirmation email sent!",
+    //     verificationLink:emailVerificationLink,
+    //     name:user.name
+    //   };
+    // }
 
     const isPasswordValid = await bcrypt.compare(password, user.password || "");
 

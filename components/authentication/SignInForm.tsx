@@ -51,29 +51,32 @@ export default function SignInForm() {
       }
 
       if (res?.status === "success") {
-       
-
-        if(res.message === "Confirmation email sent!"){
-          await emailjs.send(
-            process.env.NEXT_PUBLIC_EMAIL_JS_SERVICE_ID || "",
-            process.env.NEXT_PUBLIC_EMAIL_JS_TEMPLATE_ID || "",
-            {
-              to_name: res.name,
-              user_email: value.email,
-              resetlink: res.verificationLink,
-              type: "verify your account",
-              subject:"Verify Account"
-            },
-            {
-              publicKey: process.env.NEXT_PUBLIC_EMAIL_JS_PUBLIC_KEY || "",
-            }
-          );
-  
-          toast.success(res.message);
+        toast.success(res.message);
           setResponseStatus({ type: "success", message: res.message });
-        }else{
-          toast.success(res?.message);
-        }
+
+          // todo:LATER
+
+        // if(res.message === "Confirmation email sent!"){
+        //   await emailjs.send(
+        //     process.env.NEXT_PUBLIC_EMAIL_JS_SERVICE_ID || "",
+        //     process.env.NEXT_PUBLIC_EMAIL_JS_TEMPLATE_ID || "",
+        //     {
+        //       to_name: res.name,
+        //       user_email: value.email,
+        //       resetlink: res.verificationLink,
+        //       type: "verify your account",
+        //       subject:"Verify Account"
+        //     },
+        //     {
+        //       publicKey: process.env.NEXT_PUBLIC_EMAIL_JS_PUBLIC_KEY || "",
+        //     }
+        //   );
+  
+        //   toast.success(res.message);
+        //   setResponseStatus({ type: "success", message: res.message });
+        // }else{
+        //   toast.success(res?.message);
+        // }
   
        
 

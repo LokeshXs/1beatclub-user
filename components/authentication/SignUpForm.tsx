@@ -23,9 +23,11 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import emailjs from "@emailjs/browser";
 
+
 // FUNCTION_BEGINS_HERE
 
 export default function SignUpForm() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [responseStatus, setResponseStatus] = useState<
     { type: "success" | "error"; message: string } | undefined
@@ -48,24 +50,27 @@ export default function SignUpForm() {
 
       if (res.status === "success") {
 
-        await emailjs.send(
-          process.env.NEXT_PUBLIC_EMAIL_JS_SERVICE_ID || "",
-          process.env.NEXT_PUBLIC_EMAIL_JS_TEMPLATE_ID || "",
-          {
-            to_name: res.name,
-            user_email: value.email,
-            resetlink: res.verificationLink,
-            type: "verify your account",
-            subject:"Verify Account"
-          },
-          {
-            publicKey: process.env.NEXT_PUBLIC_EMAIL_JS_PUBLIC_KEY || "",
-          }
-        );
+        // todo:LATER
+
+        // await emailjs.send(
+        //   process.env.NEXT_PUBLIC_EMAIL_JS_SERVICE_ID || "",
+        //   process.env.NEXT_PUBLIC_EMAIL_JS_TEMPLATE_ID || "",
+        //   {
+        //     to_name: res.name,
+        //     user_email: value.email,
+        //     resetlink: res.verificationLink,
+        //     type: "verify your account",
+        //     subject:"Verify Account"
+        //   },
+        //   {
+        //     publicKey: process.env.NEXT_PUBLIC_EMAIL_JS_PUBLIC_KEY || "",
+        //   }
+        // );
 
         form.reset();
         toast.success(res.message);
         setResponseStatus({ type: "success", message: res.message });
+        router.push("/signin")
       } else {
         toast.error(res.message);
         setResponseStatus({ type: "error", message: res.message });
