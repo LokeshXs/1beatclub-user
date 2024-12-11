@@ -17,6 +17,33 @@ export default auth(async function middleware(req: NextRequest) {
   const { nextUrl } = req;
   const session = await auth();
 
+
+  // ATTACHING Content Security Policy Headers to response to guard against security threats
+
+  const cspHeader = `
+    default-src 'self';
+    img-src 'self' blob: data:;
+    font-src 'self';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-ancestors 'none';
+    upgrade-insecure-requests;
+`;
+  // Replace newline characters and spaces
+  const contentSecurityPolicyHeaderValue = cspHeader
+    .replace(/\s{2,}/g, " ")
+    .trim();
+
+
+
+  const response = NextResponse.next();
+  
+  response.headers.set(
+    "Content-Security-Policy",
+    contentSecurityPolicyHeaderValue,
+  );
+
   // todo:DEVLOPMENT ONLY
   // const token = await getToken({
   //   req: req,
@@ -76,7 +103,7 @@ export default auth(async function middleware(req: NextRequest) {
   //   return NextResponse.redirect(`${BASE_URL}/dashboard`);
   // }
 
-  return;
+  return response;
 });
 
 export const config = {
