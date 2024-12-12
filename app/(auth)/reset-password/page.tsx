@@ -4,28 +4,29 @@ import prisma from "@/lib/prisma";
 import { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata:Metadata = {
-  title:"Password Reset",
-  description:"Reset your password"
-}
+export const metadata: Metadata = {
+  title: "Password Reset",
+  description: "Reset your password",
+};
 
 export default async function Page({
   searchParams,
+
 }: {
   searchParams: Promise<{ token: string }>;
 }) {
   const { token } = await searchParams;
 
+  let content;
+
   const tokenDetails = await prisma.passwordResetToken.findUnique({
     where: {
-      token: token,
+      token: token || "",
     },
   });
 
   const tokenIsExpired =
     new Date().getTime() > (tokenDetails?.expires || new Date()).getTime();
-
-  let content;
 
   if (!tokenDetails || tokenIsExpired) {
     content = (

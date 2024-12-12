@@ -1,6 +1,5 @@
 "use client";
 
-
 import { acceptOrDeclineInvite } from "@/actions/invites";
 import { cn } from "@/lib/utils";
 import { InvitesType } from "@/types/types";
@@ -19,9 +18,8 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CircleX } from 'lucide-react';
-
-
+import { CircleX } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 export default function Invites() {
   const [invites, setInvites] = useState<InvitesType>([]);
@@ -33,6 +31,10 @@ export default function Invites() {
         const res = await axios.get("/api/user/invites");
 
         if (res.data.status !== "success") {
+          if (res.data.message === "Invalid session") {
+            signOut();
+            return toast.error(res.data.message);
+          }
           return toast.error(res.data.message);
         }
         const invites: InvitesType = res.data.invites;
@@ -154,9 +156,7 @@ function InvitesLayout({
   children: React.ReactNode;
 }) {
   return (
-
-
-    <Dialog >
+    <Dialog>
       <DialogTrigger asChild>
         <div className=" relative cursor-pointer">
           <IconBellFilled className=" w-8 h-8 text-primary" />
@@ -165,9 +165,7 @@ function InvitesLayout({
           </span>
         </div>
       </DialogTrigger>
-      <DialogContent 
-
-    
+      <DialogContent
         className={cn(
           "   w-[460px] max-sm:w-full  h-[400px] max-sm:h-[80%]  bg-secondary space-y-4 overflow-hidden py-12 max-sm:px-2 ",
           {
@@ -179,10 +177,8 @@ function InvitesLayout({
 
         <DialogClose className=" absolute -top-2 right-2 text-primary">
           <CircleX />
-
         </DialogClose>
       </DialogContent>
-
     </Dialog>
   );
 }

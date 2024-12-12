@@ -126,3 +126,11 @@ model PasswordResetToken{
 
   @@unique([email,token])
 }
+
+model ClubInvitationUrl{
+  id String @id @default(cuid())
+  clubId String
+  token String @unique
+
+  @@unique([clubId,token])
+}

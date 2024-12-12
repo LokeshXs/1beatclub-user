@@ -30,6 +30,7 @@ import { SongType } from "@/types/types";
 import { getCurrentSongInClub } from "@/actions/club";
 import { useQuery } from "@tanstack/react-query";
 import { signOut } from "next-auth/react";
+import InvitationUrl from "./InvitationUrl";
 
 export default function SongsListed() {
   const [clubs, setClubs] = useState<
@@ -177,7 +178,7 @@ export default function SongsListed() {
   let content;
 
   if (!userId) {
-    signOut();
+
     throw new Error("Invalid Session");
   }
 
@@ -277,7 +278,11 @@ export default function SongsListed() {
             </PopoverContent>
           </Popover>
 
+          <InvitationUrl />
+
           <Invites />
+
+
         </div>
       </div>
 

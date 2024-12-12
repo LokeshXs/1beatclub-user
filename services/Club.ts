@@ -16,6 +16,21 @@ export class Club {
     return this.clubInstance;
   }
 
+
+  // get a club
+
+  async getClub(clubId:string){
+
+    const club = await prisma.musicClub.findUnique({
+      where:{
+        id:clubId
+      }
+    });
+
+    return club
+
+  }
+
   //   Invite a user to club
   async inviteToClub(clubId: string, userId: string) {
     try {

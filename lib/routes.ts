@@ -6,6 +6,8 @@
 
 export const PUBLIC_ROUTES = ["/","/privacy-policy"];
 
+export const PUBLIC_DYNAMIC_ROUTES="/join-club"
+
 
 /**
  * An Array of routes that are used for authentication

@@ -6,6 +6,7 @@ import {
   AUTH_ROUTES,
   DEFAULT_LOGIN_REDIRECT,
   PREMIUM_MEMEBERS_ROUTES,
+  PUBLIC_DYNAMIC_ROUTES,
   PUBLIC_ROUTES,
 } from "@/lib/routes";
 import { BASE_URL } from "@/lib/config";
@@ -43,7 +44,8 @@ export default async function authorizationHandler(
   const isPremiumMember = token?.isPremiumMember as boolean;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(API_AUTH_PREFIX);
-  const isPublicRoute = PUBLIC_ROUTES.includes(nextUrl.pathname);
+
+  const isPublicRoute = PUBLIC_ROUTES.includes(nextUrl.pathname) || nextUrl.pathname.startsWith(PUBLIC_DYNAMIC_ROUTES);
   const isAuthRoute = AUTH_ROUTES.includes(nextUrl.pathname);
   const isPremiumMemberRoute = PREMIUM_MEMEBERS_ROUTES.includes(
     nextUrl.pathname
@@ -64,6 +66,8 @@ export default async function authorizationHandler(
   if (!isLoggedIn && !isPublicRoute) {
     return (`${BASE_URL}/signin`);
   }
+
+  return;
 
   // todo: May be in future I want to add premium feature
   // if (isPremiumMemberRoute && !isPremiumMember) {

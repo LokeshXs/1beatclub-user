@@ -11,5 +11,8 @@ if(process.env.ENVIRONMENT==="Devlopment"){
 }
 
 
+export const CLUB_INVITATION_TOKEN_EXPIRATION = 30;
+
+
 
 
