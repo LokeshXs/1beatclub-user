@@ -77,7 +77,7 @@ export default function SongTile({
         <p>{votes.length}</p>
       </Button>
 
-      {selectedClub?.adminId === session.data?.user.id && (
+      {isAdmin && (
         <IconTrashXFilled
           className=" w-10 h-10 max-sm:w-6 max-sm:h-6 text-red-600 hover:cursor-pointer"
           title="Remove Song"

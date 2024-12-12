@@ -58,7 +58,7 @@ export default function SongsListed() {
   const [value, setValue] = useState("");
 
   const userId = data?.user?.id;
-  const isAdmin = data?.user.role === "ADMIN";
+  const isAdmin = selectedClub?.adminId === data?.user.id
 
   const { isError: hasFetchingClubsError, isLoading: areClubsLoading } =
     useQuery({
@@ -278,7 +278,7 @@ export default function SongsListed() {
             </PopoverContent>
           </Popover>
 
-          <InvitationUrl />
+          {isAdmin && <InvitationUrl />}
 
           <Invites />
 
