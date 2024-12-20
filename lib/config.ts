@@ -10,6 +10,8 @@ if(process.env.ENVIRONMENT==="Devlopment"){
  WS_SERVER_URL= "wss://seal-app-yn5xl.ondigitalocean.app"
 }
 
+export  const YOUTUBE_WATCH_BASE_URL="https://www.youtube.com/watch"
+
 
 export const CLUB_INVITATION_TOKEN_EXPIRATION = 30;
 

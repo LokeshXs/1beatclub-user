@@ -159,7 +159,7 @@ function InvitesLayout({
     <Dialog>
       <DialogTrigger asChild>
         <div className=" relative cursor-pointer">
-          <IconBellFilled className=" w-8 h-8 text-primary" />
+          <IconBellFilled className=" w-8 h-8 text-primary sm:hover:text-terniary hover:cursor-pointer" />
           <span className=" absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-600 text-primary flex justify-center items-center text-sm p-1">
             {invites.length}
           </span>

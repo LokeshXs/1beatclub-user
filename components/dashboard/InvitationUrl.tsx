@@ -1,9 +1,6 @@
-import { IconCopy, IconMailOpenedFilled } from "@tabler/icons-react";
+import { IconCopy, IconQrcode } from "@tabler/icons-react";
 import { useMusicClub } from "@/store/musicClubStore";
 import { toast } from "sonner";
-import { v4 as uuid4 } from "uuid";
-import { generateClubInviteUrl, getToken } from "@/lib/utils";
-import { CLUB_INVITATION_TOKEN_EXPIRATION } from "@/lib/config";
 import { useState, useTransition } from "react";
 import { generateClubUrlInvite } from "@/actions/invites";
 import {
@@ -14,9 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
 import {QRCode} from "react-qrcode-logo"
-import { Separator } from "../ui/separator";
 
 
 export default function InvitationUrl() {
@@ -56,9 +51,9 @@ export default function InvitationUrl() {
 
   return (
     <>
-      <IconMailOpenedFilled
+      <IconQrcode
         onClick={handleUrlInvitation}
-        className=" w-8 h-8 text-primary"
+        className=" w-8 h-8 text-primary hover:cursor-pointer sm:hover:text-terniary"
       />
 
       <Dialog open={openModal} onOpenChange={setOpenModal}>
