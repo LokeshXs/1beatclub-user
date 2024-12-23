@@ -6,6 +6,7 @@ import DashboardSideBar from "./DashboardSideBar";
 import { auth } from "@/auth";
 import WebSocketClientProvider from "@/context/WebSocketClientProvider";
 import { Metadata } from "next";
+import PremiumSubscriptionModal from "@/components/common/PremiumSubscriptionModal";
 
 
 export const metadata:Metadata={
@@ -32,6 +33,7 @@ export default async function Layout({
       <div className=" overflow-y-auto w-full">
       <SessionProvider>
         <WebSocketClientProvider>{children}</WebSocketClientProvider>
+        <PremiumSubscriptionModal />
       </SessionProvider>
       </div>
     </div>

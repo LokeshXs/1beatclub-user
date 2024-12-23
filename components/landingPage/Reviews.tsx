@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { Marquee } from "../ui/Marquee";
 import Image from "next/image";
 import { REVIEWS } from "@/lib/data";
+import RevealUp from "../animation/RevealUp";
 
 const firstRow = REVIEWS.slice(0, REVIEWS.length / 2);
 const secondRow = REVIEWS;
@@ -43,7 +44,7 @@ const ReviewCard = ({
          
         </div>
       </div>
-      <blockquote className="mt-2 text-sm bg-secondary p-2 text-secondary-foreground rounded-lg">
+      <blockquote className="mt-2 text-sm bg-secondary/80 p-2 text-secondary-foreground rounded-lg">
         {body}
       </blockquote>
     </figure>
@@ -53,6 +54,7 @@ const ReviewCard = ({
 export default function ReviewsSection() {
   return (
     <section className="container mx-auto space-y-12 max-sm:space-y-6 ">
+      <RevealUp>
       <div className=" flex flex-col items-center gap-2">
         <h2 className=" text-4xl max-sm:text-2xl text-center font-semibold text-secondary">
           What our <span className=" text-terniary">Users</span> are saying
@@ -61,6 +63,7 @@ export default function ReviewsSection() {
           Hear what our users have to say about their experience.
         </p>
       </div>
+      </RevealUp>
 
       <div className="container mx-auto relative h-[800px] max-md:h-[500px]  flex  items-center justify-center gap-4 overflow-hidden rounded-lg border bg-primary ">
         <Marquee

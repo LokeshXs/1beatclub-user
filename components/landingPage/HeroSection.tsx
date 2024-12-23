@@ -9,6 +9,8 @@ import { IconArrowNarrowUp } from "@tabler/icons-react";
 import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import BoxReveal from "../animation/BoxReveal";
+import RevealUp from "../animation/RevealUp";
 
 const DISPLAY_SONGS_INFO = [
   {
@@ -99,11 +101,14 @@ export default function HeroSection() {
             isClickToPauseDisabled={true}
           />
         </div>
-        <p className=" italic text-lg max-sm:text-base text-primary-foreground/90 max-lg:text-center max-w-lg ">
+       <RevealUp>
+       <p className=" italic text-lg max-sm:text-base text-primary-foreground/90 max-lg:text-center max-w-lg ">
           Vote for your favorite tunes and watch them climb to the top of the
           playlist.
         </p>
+       </RevealUp>
 
+        <RevealUp delay={0.3}>
         <Button
           asChild
           className=" mt-6  text-terniary-foreground bg-terniary hover:bg-terniary/90 text-lg max-sm:text-sm py-5 flex items-center gap-2 group"
@@ -113,8 +118,20 @@ export default function HeroSection() {
             <ArrowRight className=" group-hover:translate-x-1 transition-all duration-300 max-sm:w-4 max-sm:group-hover:translate-x-0" />
           </Link>
         </Button>
+        </RevealUp>
 
-        <a href="https://www.producthunt.com/posts/1beatclub?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-1beatclub" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=683983&theme=light" alt="1BeatClub - 1BeatClub&#0032;–&#0032;Where&#0032;everyone’s&#0032;vibe&#0032;becomes&#0032;the&#0032;playlist&#0033; | Product Hunt" className=" mt-4"  width="240" height="54" /></a>
+        <a
+          href="https://www.producthunt.com/posts/1beatclub?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-1beatclub"
+          target="_blank"
+        >
+          <img
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=683983&theme=light"
+            alt="1BeatClub - 1BeatClub&#0032;–&#0032;Where&#0032;everyone’s&#0032;vibe&#0032;becomes&#0032;the&#0032;playlist&#0033; | Product Hunt"
+            className=" mt-4"
+            width="240"
+            height="54"
+          />
+        </a>
       </div>
 
       <div className=" w-[400px] max-2xl:w-[360px] max-md:w-[300px] max-sm:w-[200px] ">

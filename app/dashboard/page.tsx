@@ -10,6 +10,7 @@ import { WebSocketClientContext } from "@/context/WebSocketClientProvider";
 import Loader from "@/components/ui/loader/loader";
 import ClubInvitation from "@/components/dashboard/ClubInvitation";
 import YoutubeVideoSearch from "@/components/dashboard/YoutubeVideoSearch";
+import ShimmerButton from "@/components/ui/ShimmerButton";
 
 export default function SidebarDemo() {
   const { wsClient } = useContext(WebSocketClientContext);
@@ -43,16 +44,23 @@ export default function SidebarDemo() {
       <div className="max-xl:h-[600px] max-sm:w-full  overflow-y-auto  row-span-2 bg-secondary/20 rounded-lg ">
         <SongsListed />
       </div>
-      <div className=" p-4 w-full max-md:max-w-[600px]   bg-[#d5cec3] flex justify-center items-center rounded-2xl max-xl:row-start-2 ">
-        <div className=" flex flex-col  justify-center gap-6 max-sm:gap-4">
+      <div className=" p-4 py-14 max-md:py-4 w-full max-md:max-w-[600px]   bg-[#d5cec3] flex justify-center items-center rounded-2xl max-xl:row-start-2 ">
+        <div className=" flex flex-col items-center  justify-center gap-6 max-sm:gap-4">
           <p className=" max-h-96 text-primary-foreground text-center max-sm:text-sm">
             Paste a Youtube video url to add in list
           </p>
 
           <AddSongForm />
 
-          <p className=" text-center text-secondary/80">OR</p>
-          <YoutubeVideoSearch />
+
+          {/* Hiding the payment and YT search feature both */}
+
+          {/* <p className=" text-center text-secondary/80">OR</p>
+
+        
+          
+     
+          <YoutubeVideoSearch /> */}
         </div>
       </div>
       <ClubInvitation />

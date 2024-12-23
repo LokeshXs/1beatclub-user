@@ -14,4 +14,4 @@ if (process.env.ENVIRONMENT === "Devlopment") {
 
 export const YOUTUBE_WATCH_BASE_URL = "https://www.youtube.com/watch";
 
-export const CLUB_INVITATION_TOKEN_EXPIRATION = 30;
+export const isPremiumEnabled = true;

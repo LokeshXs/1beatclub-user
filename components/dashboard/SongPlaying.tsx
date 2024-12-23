@@ -36,10 +36,11 @@ export default function SongPlaying() {
     (state) => state.currentSongPlaying
   );
   const playnextSong = useListedSongStore((state) => state.nextSong);
-  const listedSongs = useListedSongStore((state) => state.listedSongs);
   const areSongsLoading = useListedSongStore((state) => state.areSongsLoading);
   const session = useSession();
   const isAdmin = selectedClub?.adminId === session.data?.user.id
+
+
 
   useEffect(() => {
     const updateNextSongInDB = async () => {
@@ -155,7 +156,7 @@ export default function SongPlaying() {
         </div>
       )}
 
-     { <Image src={currentSongPlaying.highResThumbnail || ""} alt="Song Image" width={400} height={400} className="absolute top-0 left-0 w-full h-full opacity-60" />}
+     { <Image src={currentSongPlaying.highResThumbnail || ""} alt="Song Image" width={400} height={400} className="absolute top-0 left-0 w-full h-full opacity-50" />}
     </div>
   );
 }

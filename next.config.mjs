@@ -19,7 +19,7 @@ const nextConfig = {
             {
                 protocol:'https',
                 hostname:"dqy38fnwh4fqs.cloudfront.net"
-            },
+            }
         ]
     }
 };
