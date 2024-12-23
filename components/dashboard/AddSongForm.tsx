@@ -89,7 +89,7 @@ export default function AddSongForm() {
               <FormLabel />
               <FormControl>
                 <Input
-                  placeholder="shadcn"
+                  placeholder="Paste here..."
                   className=" border-primary-foreground "
                   {...field}
                 />

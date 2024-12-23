@@ -126,7 +126,7 @@ export default function InvitationModal({
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[400px] max-sm:w-full p-0">
-                <Command>
+                <Command shouldFilter={false}>
                   <CommandInput
                     placeholder="Search user..."
                     onValueChange={searchByChangeHandler}

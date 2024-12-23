@@ -7,6 +7,18 @@ const nextConfig = {
             {
                 protocol:'https',
                 hostname:"i.ytimg.com"
+            },
+            {
+                protocol:'https',
+                hostname:"ph-avatars.imgix.net"
+            },
+            {
+                protocol:'https',
+                hostname:"lh3.googleusercontent.com"
+            },
+            {
+                protocol:'https',
+                hostname:"dqy38fnwh4fqs.cloudfront.net"
             }
         ]
     }

@@ -13,7 +13,7 @@ export default async function middleware(req: NextRequest) {
   const session = await auth();
 
 
-  1. // ATTACHING Content Security Policy Headers to response to guard against content related security threats
+  1. // ATTACHING Content Security Policy Headers to response to guard against content related security attacks
   response = CSPProtection(response);
 
 

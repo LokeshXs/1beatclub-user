@@ -6,6 +6,7 @@ import ContactUsSection from "@/components/landingPage/ContactusSection";
 import HowItWorksSection from "@/components/landingPage/HowItWorks";
 import ActionSection from "@/components/landingPage/ActionSection";
 import Footer from "@/components/landingPage/Footer";
+import ReviewsSection from "@/components/landingPage/Reviews";
 
 export const metadata:Metadata = {
   title:"1BeatClub: Your Music, Voted by the Crowd",
@@ -20,6 +21,7 @@ export default function Home() {
     <HeroSection />
     {/* <DashboardSection /> */}
     <UseCasesBentoGrid />
+    <ReviewsSection />
     <HowItWorksSection />
     <ContactUsSection/>
     <ActionSection />

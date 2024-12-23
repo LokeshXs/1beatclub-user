@@ -41,10 +41,10 @@ export async function getVideoInfo(
 
     let videoId: string | null;
 
-    if(params.get("v")){
-      videoId = params.get("v")
-    }else{
-      videoId = url.pathname.substring(1)
+    if (params.get("v")) {
+      videoId = params.get("v");
+    } else {
+      videoId = url.pathname.substring(1);
     }
 
     if (!videoId) {
@@ -57,7 +57,7 @@ export async function getVideoInfo(
     const response = await axios.get(
       `https://youtube.googleapis.com/youtube/v3/videos`,
       {
-        params: {
+        params: { 
           part: "snippet",
           id: videoId,
           key: process.env.GOOGLE_API_KEY,
@@ -70,7 +70,6 @@ export async function getVideoInfo(
 
     const data = response.data;
     const videoDetails = data.items[0].snippet;
-
 
     const highResoultionThumbnail =
       videoDetails.thumbnails?.maxres?.url ||
@@ -121,5 +120,62 @@ export async function getVideoInfo(
       status: "error",
       message: error.message || "Something went wrong, Try Again!",
     };
+  }
+}
+
+export async function searchYoutubeVideo(searchBy: string) {
+  try {
+    const params = {
+      part: "snippet",
+      q: searchBy,
+      type: "video",
+      safeSearch: "moderate",
+      maxResults:5,
+      key: process.env.GOOGLE_API_KEY,
+    };
+
+    const response = await axios.get(
+      "https://www.googleapis.com/youtube/v3/search",
+      {
+        params: params,
+       headers:{
+        Accept:"application/json"
+       } 
+      }
+    );
+
+    const data = response.data;
+
+    // console.log(data);
+
+    const videosData = data.items.map((value:any)=>{
+      const modifiedObj = {
+        title:value.snippet.title,
+        videoId:value.id.videoId,
+        thumbnail:value.snippet.thumbnails.medium.url || value.snippet.thumbnails.default.url ,
+        channelTitle:value.snippet.channelTitle
+
+      }
+
+      return modifiedObj;
+    });
+
+    console.log(videosData);
+
+
+    return {
+      "status":"success",
+      "message":"Videos Fetched Successfully",
+      results:videosData
+    }
+
+
+  } catch (err:any) {
+    console.error(err);
+
+    return {
+      "status":"error",
+      "message":err.message || "Something went wrong"
+    }
   }
 }
