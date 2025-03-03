@@ -76,7 +76,7 @@ export default function Footer(){
             <div className=" p-6 max-sm:p-4 bg-terniary rounded-t-2xl">
                <div className=" container mx-auto flex max-sm:flex-col max-sm:items-center justify-between gap-6 max-sm:gap-2 items-center">
                <p className=" text-white text-center max-sm:text-sm">
-                    Product By <Link target="_blank" href="https://ashwacreations.com/" className=" underline">Ashwa Creations</Link>
+                    Product By <Link target="_blank" href="https://x.com/singh_loke28577" className=" underline">Lokesh Singh</Link>
                 </p>
 
                 <p className=" text-white text-center max-sm:text-sm ">Copyright © {(new Date()).getFullYear()} 1BeatClub. All Rights Reserved.</p>
