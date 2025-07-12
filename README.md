@@ -84,9 +84,5 @@
 <p><strong>Using <a href="https://www.npmjs.com/">npm</a>:</strong></p>
 <pre><code class="language-sh">npm start
 </code></pre>
-<h3>Testing</h3>
-<p>1beatclub-user uses the {<strong>test_framework</strong>} test framework. Run the test suite with:</p>
-<p><strong>Using <a href="https://www.npmjs.com/">npm</a>:</strong></p>
-<pre><code class="language-sh">npm test
-</code></pre>
+</pre>
 <hr></div></div></div></div>
