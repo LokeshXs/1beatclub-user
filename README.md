@@ -89,6 +89,4 @@
 <p><strong>Using <a href="https://www.npmjs.com/">npm</a>:</strong></p>
 <pre><code class="language-sh">npm test
 </code></pre>
-<hr>
-<div align="left" class="" bis_skin_checked="1"><a href="#top">⬆ Return</a></div>
 <hr></div></div></div></div>
