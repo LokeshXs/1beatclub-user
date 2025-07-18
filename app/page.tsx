@@ -21,11 +21,11 @@ export default function Home() {
     <HeroSection />
     {/* <DashboardSection /> */}
     <UseCasesBentoGrid />
-    <ReviewsSection />
+    {/* <ReviewsSection /> */}
     <HowItWorksSection />
-    <ContactUsSection/>
-    <ActionSection />
-    <Footer/>
+    {/* <ContactUsSection/> */}
+    {/* <ActionSection /> */}
+    {/* <Footer/> */}
   </main>
   );
 }

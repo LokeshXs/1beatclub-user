@@ -120,7 +120,7 @@ export default function HeroSection() {
         </Button>
         </RevealUp>
 
-        <a
+        {/* <a
           href="https://www.producthunt.com/posts/1beatclub?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-1beatclub"
           target="_blank"
         >
@@ -131,7 +131,7 @@ export default function HeroSection() {
             width="240"
             height="54"
           />
-        </a>
+        </a> */}
       </div>
 
       <div className=" w-[400px] max-2xl:w-[360px] max-md:w-[300px] max-sm:w-[200px] ">

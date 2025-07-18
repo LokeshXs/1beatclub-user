@@ -5,7 +5,7 @@ if (process.env.ENVIRONMENT === "Devlopment") {
   BASE_URL = "http://localhost:3000";
   WS_SERVER_URL = "wss://1beatclub-ws.ashwacreations.com/";
 }  else {
-  BASE_URL = "https://www.1beatclub.com/";
+  BASE_URL = "https://1beatclub-user-lokeshxs-projects.vercel.app/";
   WS_SERVER_URL = "wss://1beatclub-ws.ashwacreations.com/";
 }
 
