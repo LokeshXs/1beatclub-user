@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useCallback, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 import { WS_SERVER_URL } from "@/lib/config";
@@ -21,6 +27,7 @@ export default function WebSocketClientProvider({
   children: React.ReactNode;
 }) {
   const wsClientRef = useRef<WebSocket | null>(null);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [wsClient, setWsClient] = useState<WebSocket | null>(null);
   const pathname = usePathname();
   const session = useSession();
@@ -29,8 +36,7 @@ export default function WebSocketClientProvider({
   const userId = session.data?.user.id || "";
   const selectedMusicClubId = selectedMusicClub.selectedClub?.id || "";
 
-  const wsConnection = useCallback(() => {
-    // console.log(selectedMusicClub);
+  const connectWebSocket = useCallback(() => {
     if (pathname === "/dashboard" && userId) {
       if (wsClientRef.current) {
         wsClientRef.current.close();
@@ -40,62 +46,75 @@ export default function WebSocketClientProvider({
       const ws = new WebSocket(`${WS_SERVER_URL}?userid=${userId}`);
 
       ws.onopen = () => {
-        // toast.success("WebSocket Connection is successfull");
         wsClientRef.current = ws;
         setWsClient(ws);
+        console.log("WebSocket connected ✅");
+      };
+
+      ws.onmessage = (event) => {
+        // handle messages if needed
+        // console.log("Message:", event.data);
       };
 
       ws.onclose = () => {
-        // toast.info("Websocket connection is closed");
-        if (wsClientRef.current === ws) {
-          wsClientRef.current = null;
-          setWsClient(null);
+        console.log("WebSocket closed ❌");
+        wsClientRef.current = null;
+        setWsClient(null);
+        // Attempt reconnect after delay
+        if (pathname === "/dashboard") {
+          reconnectTimeoutRef.current = setTimeout(() => {
+            connectWebSocket();
+          }, 3000); // try again in 3 seconds
         }
       };
 
       ws.onerror = () => {
-        signOut();
-        toast.error("Something went wrong!");
+        ws.close();
+        toast.error("WebSocket error, will retry.");
       };
     }
   }, [pathname, userId]);
 
   useEffect(() => {
-    wsClientRef.current?.send(
-      JSON.stringify({
-        type: "club-change",
-        clubId: selectedMusicClubId,
-        userId: userId,
-      })
-    );
-  }, [selectedMusicClubId, userId]);
-
-  useEffect(() => {
-    wsConnection();
+    connectWebSocket();
 
     return () => {
       if (wsClientRef.current) {
         wsClientRef.current.close();
-        wsClientRef.current = null;
       }
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
+      wsClientRef.current = null;
       setWsClient(null);
     };
-  }, [pathname, userId,  wsConnection]);
+  }, [pathname, userId, connectWebSocket]);
 
+  // Send club-change when club changes
   useEffect(() => {
-    const invterval = setInterval(() => {
+    if (wsClientRef.current?.readyState === WebSocket.OPEN) {
+      wsClientRef.current.send(
+        JSON.stringify({
+          type: "club-change",
+          clubId: selectedMusicClubId,
+          userId: userId,
+        })
+      );
+    }
+  }, [selectedMusicClubId, userId]);
+
+  // Ping every 10s to keep alive
+  useEffect(() => {
+    const interval = setInterval(() => {
       if (wsClientRef.current?.readyState === WebSocket.OPEN) {
         wsClientRef.current.send(JSON.stringify({ type: "ping" }));
       }
     }, 10000);
-
-    return () => {
-      clearInterval(invterval);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <WebSocketClientContext.Provider value={{ wsClient: wsClientRef.current }}>
+    <WebSocketClientContext.Provider value={{ wsClient }}>
       {children}
     </WebSocketClientContext.Provider>
   );
